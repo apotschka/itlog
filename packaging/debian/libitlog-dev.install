@@ -1,0 +1,6 @@
+usr/include/*
+usr/lib/*/libitlog.so
+usr/lib/*/pkgconfig/libitlog.pc
+usr/share/zproject
+usr/share/man/man3/*
+usr/share/man/man7/*

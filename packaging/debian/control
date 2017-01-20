@@ -1,0 +1,49 @@
+#
+#    itlog - A portable logger for formatting output of iterative numerical algorithms
+#
+#    Copyright (c) the Contributors as noted in the AUTHORS file.       
+#    This file is part of the IterationLogger library.                  
+#                                                                       
+#    This Source Code Form is subject to the terms of the Mozilla Public
+#    License, v. 2.0. If a copy of the MPL was not distributed with this
+#    file, You can obtain one at http://mozilla.org/MPL/2.0/.           
+
+Source:         itlog
+Section:        net
+Priority:       optional
+Maintainer:     itlog Developers <email@hostname.com>
+Standards-Version: 3.9.7
+Build-Depends: debhelper (>= 9),
+    pkg-config,
+    libzmq3-dev,
+    libczmq-dev,
+    asciidoc-base | asciidoc, xmlto,
+    dh-autoreconf
+
+Package: libitlog0
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: a portable logger for formatting output of iterative numerical algorithms shared library
+ This package contains shared library for itlog: a portable logger for formatting output of iterative numerical algorithms
+
+Package: libitlog-dev
+Architecture: any
+Section: libdevel
+Depends:
+    libzmq3-dev,
+    libczmq-dev,
+    libitlog0 (= ${binary:Version})
+Description: a portable logger for formatting output of iterative numerical algorithms development tools
+ This package contains development files for itlog: a portable logger for formatting output of iterative numerical algorithms
+
+
+Package: itlog-dbg
+Architecture: any
+Section: debug
+Priority: extra
+Depends:
+    libitlog0 (= ${binary:Version}),
+    ${misc:Depends}
+Description: a portable logger for formatting output of iterative numerical algorithms debugging symbols
+ This package contains the debugging symbols for itlog : a portable logger for formatting output of iterative numerical algorithms.
+
