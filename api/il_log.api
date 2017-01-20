@@ -1,0 +1,49 @@
+<class name = "il_log">
+    Iteration logger class.
+
+    <constant name = "use last" value = "1">Log entry supplied last.</constant>
+    <constant name = "use average" value = "2">Log average of entries since last log line.</constant>
+    <constant name = "use min" value = "3">Log minimum of entries since last log line.</constant>
+    <constant name = "use max" value = "4">Log maximum of entries since last log line.</constant>
+
+    <constructor>
+        Constructor.
+    </constructor>
+
+    <destructor>
+        Destructor.
+    </destructor>
+
+    <method name = "set print interval">
+        Not implemented yet.
+        <argument name = "interval" type = "time" />
+    </method>
+
+    <method name = "entry">
+        Add or update an entry of the logger. If entries of the same header name
+        have been used before, the method accumulates the data and returns
+        false. If no entry exists yet, the method creates it and returns true.
+
+        TODO: Describe different modes.
+        <argument name = "header format" type = "string" />
+        <argument name = "header name" type = "string" />
+        <argument name = "entry format" type = "string" />
+        <argument name = "value" type = "real" />
+        <argument name = "mode" type = "integer" />
+        <return type = "boolean" />
+    </method>
+
+    <method name = "print">
+        If the time specified by the print interval has passed since the last
+        time this method has produced output, the accumulated data will be
+        formatted and printed. Every 10th line, a newline and a header will be
+        printed. The accumulated data of all entries will be reset.  If not
+        enough time has passed, nothing happens.
+    </method>
+
+    <method name = "test" singleton = "1">
+        Usage example and self test.
+        <argument name = "verbose" type = "boolean" />
+    </method>
+
+</class>

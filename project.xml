@@ -1,0 +1,19 @@
+<project
+    name = "itlog"
+    description = "A portable logger for formatting output of iterative numerical algorithms"
+    script = "zproject.gsl"
+    license = "MPLv2"
+    prefix = "il"
+    libname = "libitlog"
+    >
+    <version major = "0" minor = "1" />
+    <include filename = "license.xml" />
+    <use project = "czmq" />
+
+    <target name = "debian" />
+    <target name = "travis" />
+    <target name = "vs2015" />
+
+    <class name = "il_log" />
+
+</project>
