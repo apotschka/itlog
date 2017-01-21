@@ -66,7 +66,7 @@ BEGIN
         BLOCK "040904b0"
         BEGIN
             VALUE "CompanyName", "The AUTHORS"
-            VALUE "FileDescription", "A portable logger for formatting output of iterative numerical algorithms"
+            VALUE "FileDescription", "A portable logger for monitoring iterative numerical algorithms"
             VALUE "FileVersion", "0.1.0.0"
             VALUE "InternalName", "itlog"
             VALUE "LegalCopyright", "Copyright (c) the Authors"

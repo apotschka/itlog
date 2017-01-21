@@ -1,6 +1,6 @@
 <project
     name = "itlog"
-    description = "A portable logger for formatting output of iterative numerical algorithms"
+    description = "A portable logger for monitoring iterative numerical algorithms"
     script = "zproject.gsl"
     license = "MPLv2"
     prefix = "il"

@@ -9,7 +9,7 @@ libdir=@libdir@
 includedir=@includedir@
 
 Name: libitlog
-Description: A portable logger for formatting output of iterative numerical algorithms
+Description: A portable logger for monitoring iterative numerical algorithms
 Version: @VERSION@
 
 Requires:libzmq libczmq

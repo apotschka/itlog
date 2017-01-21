@@ -1,5 +1,5 @@
 #
-#    itlog - A portable logger for formatting output of iterative numerical algorithms
+#    itlog - A portable logger for monitoring iterative numerical algorithms
 #
 #    Copyright (c) the Contributors as noted in the AUTHORS file.       
 #    This file is part of the IterationLogger library.                  
@@ -23,8 +23,8 @@ Build-Depends: debhelper (>= 9),
 Package: libitlog0
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}
-Description: a portable logger for formatting output of iterative numerical algorithms shared library
- This package contains shared library for itlog: a portable logger for formatting output of iterative numerical algorithms
+Description: a portable logger for monitoring iterative numerical algorithms shared library
+ This package contains shared library for itlog: a portable logger for monitoring iterative numerical algorithms
 
 Package: libitlog-dev
 Architecture: any
@@ -33,8 +33,8 @@ Depends:
     libzmq3-dev,
     libczmq-dev,
     libitlog0 (= ${binary:Version})
-Description: a portable logger for formatting output of iterative numerical algorithms development tools
- This package contains development files for itlog: a portable logger for formatting output of iterative numerical algorithms
+Description: a portable logger for monitoring iterative numerical algorithms development tools
+ This package contains development files for itlog: a portable logger for monitoring iterative numerical algorithms
 
 
 Package: itlog-dbg
@@ -44,6 +44,6 @@ Priority: extra
 Depends:
     libitlog0 (= ${binary:Version}),
     ${misc:Depends}
-Description: a portable logger for formatting output of iterative numerical algorithms debugging symbols
- This package contains the debugging symbols for itlog : a portable logger for formatting output of iterative numerical algorithms.
+Description: a portable logger for monitoring iterative numerical algorithms debugging symbols
+ This package contains the debugging symbols for itlog : a portable logger for monitoring iterative numerical algorithms.
 

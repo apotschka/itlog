@@ -1,5 +1,5 @@
 /*  =========================================================================
-    itlog - A portable logger for formatting output of iterative numerical algorithms
+    itlog - A portable logger for monitoring iterative numerical algorithms
 
     Copyright (c) the Contributors as noted in the AUTHORS file.       
     This file is part of the IterationLogger library.                  

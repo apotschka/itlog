@@ -39,6 +39,7 @@ endif
 
 EXTRA_DIST += \
     LICENSE \
+    README.md \
     src/il_classes.h
 
 include $(srcdir)/src/Makemodule.am
