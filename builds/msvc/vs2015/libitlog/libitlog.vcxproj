@@ -81,6 +81,9 @@
     <ClInclude Include="..\..\..\..\include\itlog.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\..\src\il_column.c">
+      <CompileAs>CompileAsCpp</CompileAs>
+    </ClCompile>
     <ClCompile Include="..\..\..\..\src\il_log.c">
       <CompileAs>CompileAsCpp</CompileAs>
     </ClCompile>

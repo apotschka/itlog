@@ -38,6 +38,7 @@ EXTRA_DIST += \
 endif
 
 EXTRA_DIST += \
+    src/il_column.h \
     LICENSE \
     README.md \
     src/il_classes.h

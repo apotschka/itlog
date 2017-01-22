@@ -24,9 +24,15 @@
 #include "../include/itlog.h"
 
 //  Internal API
+#include "il_column.h"
 
 //  *** To avoid double-definitions, only define if building without draft ***
 #ifndef IL_BUILD_DRAFT_API
+
+//  *** Draft method, defined for internal use only ***
+//  Self test of this class.
+IL_PRIVATE void
+    il_column_test (bool verbose);
 
 //  Self test for private classes
 IL_PRIVATE void

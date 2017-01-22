@@ -22,6 +22,7 @@ include_HEADERS += \
 
 endif
 src_libitlog_la_SOURCES = \
+    src/il_column.c \
     src/platform.h
 
 if ENABLE_DRAFTS

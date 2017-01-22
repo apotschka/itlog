@@ -28,6 +28,8 @@
 void
 il_private_selftest (bool verbose)
 {
+// Tests for stable private classes:
+    il_column_test (verbose);
 }
 /*
 ################################################################################

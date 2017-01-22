@@ -4,7 +4,7 @@ Name(7)
 
 NAME
 ----
-itlog - Overview of A portable logger for formatting output of iterative numerical algorithms
+itlog - Overview of A portable logger for monitoring iterative numerical algorithms
 
 
 SYNOPSIS

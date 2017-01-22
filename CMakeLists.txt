@@ -109,6 +109,7 @@ ENDIF (CZMQ_FOUND)
 set (il_headers
     include/il_library.h
     include/itlog.h
+    src/il_column.h
 )
 
 IF (ENABLE_DRAFTS)
@@ -125,6 +126,7 @@ install(FILES ${il_headers} DESTINATION include)
 ########################################################################
 include_directories("${SOURCE_DIR}/src" "${SOURCE_DIR}/include")
 set (il_sources
+    src/il_column.c
 )
 
 IF (ENABLE_DRAFTS)
