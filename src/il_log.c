@@ -70,7 +70,7 @@ il_log_entry (il_log_t *self, const char *header_format, const char *header_name
 {
     bool new_column = false;
     assert (self);
-    il_column_t *col = zhash_lookup (self->columns, header_name);
+    il_column_t *col = (il_column_t *) zhash_lookup (self->columns, header_name);
     if (!col) {
         new_column = true;
         col = il_column_new ();
@@ -122,19 +122,19 @@ il_log_print (il_log_t *self)
         fprintf (self->file, "\n");
         zlist_t *keys = zhash_keys (self->columns);
         assert (keys);
-        header_name = zlist_first (keys);
-        col = zhash_first (self->columns);
+        header_name = (char *) zlist_first (keys);
+        col = (il_column_t *) zhash_first (self->columns);
         while (header_name && col) {
             fprintf (self->file, col->header_format, header_name);
-            header_name = zlist_next (keys);
-            col = zhash_next (self->columns);
+            header_name = (char *) zlist_next (keys);
+            col = (il_column_t *) zhash_next (self->columns);
         }
         fprintf (self->file, "\n");
         assert (header_name == NULL && col == NULL);
         zlist_destroy (&keys);
     }
     //  Print and reset accumulated data
-    col = zhash_first (self->columns);
+    col = (il_column_t *) zhash_first (self->columns);
     while (col) {
         if (col->mode != IL_LOG_USE_AVERAGE)
             fprintf (self->file, col->entry_format, col->data);
@@ -142,7 +142,7 @@ il_log_print (il_log_t *self)
             fprintf (self->file, col->entry_format, col->data / col->modifier);
         col->data = 0.0;
         col->modifier = 0.0;
-        col = zhash_next (self->columns);
+        col = (il_column_t *) zhash_next (self->columns);
     }
     fprintf (self->file, "\n");
 }
