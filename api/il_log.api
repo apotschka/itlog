@@ -5,6 +5,7 @@
     <constant name = "use average" value = "2">Log average of entries since last log line.</constant>
     <constant name = "use min" value = "3">Log minimum of entries since last log line.</constant>
     <constant name = "use max" value = "4">Log maximum of entries since last log line.</constant>
+    <constant name = "unit interval" value = "0x100">Flag for special printing of values in [0,1].</constant>
 
     <constructor>
         Constructor.

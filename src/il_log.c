@@ -66,7 +66,8 @@ il_log_destroy (il_log_t **self_p)
 //  Add or update an entry.
 
 bool
-il_log_entry (il_log_t *self, const char *header_format, const char *header_name, const char *entry_format, float value, int mode)
+il_log_entry (il_log_t *self, const char *header_format, const char *header_name, 
+        const char *entry_format, float value, int mode)
 {
     bool new_column = false;
     assert (self);
@@ -82,7 +83,7 @@ il_log_entry (il_log_t *self, const char *header_format, const char *header_name
         zhash_freefn (self->columns, header_name, free);
     }
     assert ("You cannot change the mode of a column" && mode == col->mode);
-    switch (mode) {
+    switch (mode & 0xFF) {
         case IL_LOG_USE_LAST: col->data = value; break;
         case IL_LOG_USE_AVERAGE: col->data += value; col->modifier += 1.0; break;
         case IL_LOG_USE_MIN: 
@@ -136,11 +137,20 @@ il_log_print (il_log_t *self)
     }
     //  Print and reset accumulated data
     col = (il_column_t *) zhash_first (self->columns);
+    double data;
     while (col) {
-        if (col->mode != IL_LOG_USE_AVERAGE)
-            fprintf (self->file, col->entry_format, col->data);
-        else
-            fprintf (self->file, col->entry_format, col->data / col->modifier);
+        data = col->data;
+        if ((col->mode & 0xFF) == IL_LOG_USE_AVERAGE) 
+            data /= col->modifier;
+        if (col->mode & IL_LOG_UNIT_INTERVAL) {
+            if (data <= 0.5)
+                fprintf (self->file, "   ");
+            else {
+                fprintf (self->file, " 1-");
+                data = 1.0 - data;
+            }
+        }
+        fprintf (self->file, col->entry_format, data);
         col->data = 0.0;
         col->modifier = 0.0;
         col = (il_column_t *) zhash_next (self->columns);
@@ -162,13 +172,16 @@ il_log_test (bool verbose)
     assert (self);
 
     //  Loop with synthetic data
+    const double data_max = 20.0;
     double data;
-    for (data = 0.0; data < 20.0; data += 1.0)
+    for (data = 0.0; data < data_max; data += 1.0)
     {
         il_log_entry (self, "%10s", "last", "%10.0f", data, IL_LOG_USE_LAST);
         il_log_entry (self, "%10s", "average", "%10.1f", data, IL_LOG_USE_AVERAGE);
         il_log_entry (self, "%10s", "minimum", "%10.0f", data, IL_LOG_USE_MIN);
         il_log_entry (self, "%10s", "maximum", "%10.0f", data, IL_LOG_USE_MAX);
+        il_log_entry (self, "%10s", "[0, 1]", "%7.1e", data / (data_max-1.0), 
+                IL_LOG_UNIT_INTERVAL | IL_LOG_USE_LAST);
 
         il_log_print (self);
     }

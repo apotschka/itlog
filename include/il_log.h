@@ -26,6 +26,7 @@ extern "C" {
 #define IL_LOG_USE_AVERAGE 2                // Log average of entries since last log line.
 #define IL_LOG_USE_MIN 3                    // Log minimum of entries since last log line.
 #define IL_LOG_USE_MAX 4                    // Log maximum of entries since last log line.
+#define IL_LOG_UNIT_INTERVAL 0x100          // Flag for special printing of values in [0,1].
 
 //  *** Draft method, for development use, may change without warning ***
 //  Constructor.
