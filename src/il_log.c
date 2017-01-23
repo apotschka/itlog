@@ -79,6 +79,7 @@ il_log_entry (il_log_t *self, const char *header_format, const char *header_name
         col->header_format = header_format;
         col->entry_format = entry_format;
         col->mode = mode;
+        zhash_freefn (self->columns, header_name, free);
     }
     assert ("You cannot change the mode of a column" && mode == col->mode);
     switch (mode) {
