@@ -16,8 +16,8 @@
     </destructor>
 
     <method name = "set print interval">
-        Not implemented yet.
-        <argument name = "interval" type = "time" />
+        Set the print interval in microseconds.
+        <argument name = "interval" type = "msecs" />
     </method>
 
     <method name = "entry">

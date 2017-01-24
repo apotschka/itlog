@@ -39,9 +39,9 @@ IL_EXPORT void
     il_log_destroy (il_log_t **self_p);
 
 //  *** Draft method, for development use, may change without warning ***
-//  Not implemented yet.
+//  Set the print interval in microseconds.
 IL_EXPORT void
-    il_log_set_print_interval (il_log_t *self, time_t interval);
+    il_log_set_print_interval (il_log_t *self, int64_t interval);
 
 //  *** Draft method, for development use, may change without warning ***
 //  Add or update an entry of the logger. If entries of the same header name

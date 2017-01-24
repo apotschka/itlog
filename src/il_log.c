@@ -23,7 +23,9 @@
 
 struct _il_log_t {
     zhash_t *columns;  //  Column entries are saved in a hash.
-    int n_lines_printed;  //  Number of lines printed.
+    uint64_t n_lines_printed;  //  Number of lines printed.
+    int64_t last_time;  //  Time of last line printing [ms].
+    int64_t print_interval;  //  Interval between line printings [ms].
     FILE *file;  //  Output file (default: stdout).
 };
 
@@ -39,6 +41,8 @@ il_log_new (void)
     //  Initialize class properties here
     self->columns = zhash_new ();
     self->n_lines_printed = 0;
+    self->last_time = 0;
+    self->print_interval = 0;
     self->file = stdout;
     return self;
 }
@@ -59,6 +63,17 @@ il_log_destroy (il_log_t **self_p)
         free (self);
         *self_p = NULL;
     }
+}
+
+
+//  --------------------------------------------------------------------------
+//  Set print interval.
+
+void
+il_log_set_print_interval (il_log_t *self, int64_t _print_interval)
+{
+    assert (self);
+    self->print_interval = _print_interval;
 }
 
 
@@ -116,8 +131,16 @@ il_log_entry (il_log_t *self, const char *header_format, const char *header_name
 void
 il_log_print (il_log_t *self)
 {
-    il_column_t *col;
     assert (self);
+
+    if (self->print_interval > 0) {
+        int64_t now = zclock_mono ();
+        if (now < self->last_time + self->print_interval)
+            return;
+        self->last_time = now;
+    }
+
+    il_column_t *col;
     if (self->n_lines_printed++ % 10 == 0) {
         //  Print header
         char *header_name;
@@ -171,19 +194,24 @@ il_log_test (bool verbose)
     il_log_t *self = il_log_new ();
     assert (self);
 
-    //  Loop with synthetic data
-    const double data_max = 20.0;
+    const double data_max = 30.0;
     double data;
-    for (data = 0.0; data < data_max; data += 1.0)
-    {
-        il_log_entry (self, "%10s", "last", "%10.0f", data, IL_LOG_USE_LAST);
-        il_log_entry (self, "%10s", "average", "%10.1f", data, IL_LOG_USE_AVERAGE);
-        il_log_entry (self, "%10s", "minimum", "%10.0f", data, IL_LOG_USE_MIN);
-        il_log_entry (self, "%10s", "maximum", "%10.0f", data, IL_LOG_USE_MAX);
-        il_log_entry (self, "%10s", "[0, 1]", "%7.1e", data / (data_max-1.0), 
-                IL_LOG_UNIT_INTERVAL | IL_LOG_USE_LAST);
+    for (int run = 0; run < 2; run++) {
+        fprintf(stdout, "\nRun %s print interval.\n", run == 0? "without": "with");
+        //  Loop with synthetic data
+        for (data = 0.0; data < data_max; data += 1.0) {
+            zclock_sleep (30);
+            il_log_entry (self, "%10s", "last", "%10.0f", data, IL_LOG_USE_LAST);
+            il_log_entry (self, "%10s", "average", "%10.1f", data, IL_LOG_USE_AVERAGE);
+            il_log_entry (self, "%10s", "minimum", "%10.0f", data, IL_LOG_USE_MIN);
+            il_log_entry (self, "%10s", "maximum", "%10.0f", data, IL_LOG_USE_MAX);
+            il_log_entry (self, "%10s", "[0, 1]", "%7.1e", data / (data_max-1.0),
+                    IL_LOG_UNIT_INTERVAL | IL_LOG_USE_LAST);
+            il_log_print (self);
+        }
 
-        il_log_print (self);
+        //  Switch on print interval
+        il_log_set_print_interval (self, 50);
     }
 
     il_log_destroy (&self);
