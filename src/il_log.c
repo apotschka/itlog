@@ -28,6 +28,7 @@ struct _il_log_t {
     uint64_t n_lines_printed;  //  Number of lines printed.
     int64_t last_time;  //  Time of last line printing [ms].
     int64_t print_interval;  //  Interval between line printings [ms].
+    int print_level;
     FILE *file;  //  Output file (default: stdout).
 };
 
@@ -132,6 +133,30 @@ il_log_entry (il_log_t *self, const char *header_format, const char *header_name
 
 
 //  --------------------------------------------------------------------------
+//  Set print level of the logger.
+
+void
+il_log_set_print_level (il_log_t *self, int print_level)
+{
+    assert (self);
+    self->print_level = print_level;
+}
+
+
+//  --------------------------------------------------------------------------
+//  Set print level of a column.
+
+void
+il_log_set_column_print_level (il_log_t *self, const char *header_name, int print_level)
+{
+    assert (self);
+    il_column_t *col = (il_column_t *) zhash_lookup (self->columns, header_name);
+    if (col)
+        col->print_level = print_level;
+}
+
+
+//  --------------------------------------------------------------------------
 //  Print out accumulated data.
 
 void
@@ -146,42 +171,52 @@ il_log_print (il_log_t *self)
         self->last_time = now;
     }
 
+    bool printed_something = false;
     il_column_t *col;
     if (self->n_lines_printed++ % 10 == 0) {
         //  Print header
         char *header_name;
-        fprintf (self->file, "\n");
         header_name = (char *) zlist_first (self->header_list);
         col = (il_column_t *) zlist_first (self->column_list);
         while (header_name && col) {
-            fprintf (self->file, col->header_format, header_name);
+            if (col->print_level <= self->print_level) {
+                if (!printed_something)
+                    fprintf (self->file, "\n");
+                fprintf (self->file, col->header_format, header_name);
+                printed_something = true;
+            }
             header_name = (char *) zlist_next (self->header_list);
             col = (il_column_t *) zlist_next (self->column_list);
         }
-        fprintf (self->file, "\n");
+        if (printed_something)
+            fprintf (self->file, "\n");
         assert (header_name == NULL && col == NULL);
     }
     //  Print and reset accumulated data
     col = (il_column_t *) zlist_first (self->column_list);
     double data;
     while (col) {
-        data = col->data;
-        if ((col->mode & 0xFF) == IL_LOG_USE_AVERAGE) 
-            data /= col->modifier;
-        if (col->mode & IL_LOG_UNIT_INTERVAL) {
-            if (data <= 0.5)
-                fprintf (self->file, "   ");
-            else {
-                fprintf (self->file, " 1-");
-                data = 1.0 - data;
+        if (col->print_level <= self->print_level) {
+            printed_something = true;
+            data = col->data;
+            if ((col->mode & 0xFF) == IL_LOG_USE_AVERAGE)
+                data /= col->modifier;
+            if (col->mode & IL_LOG_UNIT_INTERVAL) {
+                if (data <= 0.5)
+                    fprintf (self->file, "   ");
+                else {
+                    fprintf (self->file, " 1-");
+                    data = 1.0 - data;
+                }
             }
+            fprintf (self->file, col->entry_format, data);
         }
-        fprintf (self->file, col->entry_format, data);
         col->data = 0.0;
         col->modifier = 0.0;
         col = (il_column_t *) zlist_next (self->column_list);
     }
-    fprintf (self->file, "\n");
+    if (printed_something)
+        fprintf (self->file, "\n");
 }
 
 //  --------------------------------------------------------------------------
@@ -213,11 +248,12 @@ il_log_test (bool verbose)
                     IL_LOG_UNIT_INTERVAL | IL_LOG_USE_LAST);
             il_log_print (self);
         }
-
         //  Switch on print interval
         il_log_set_print_interval (self, 50);
+        //  Change print levels
+        il_log_set_print_level (self, 2);
+        il_log_set_column_print_level (self, "last", 3);
     }
-
     il_log_destroy (&self);
     //  @end
     printf ("OK\n");

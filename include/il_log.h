@@ -53,6 +53,18 @@ IL_EXPORT bool
     il_log_entry (il_log_t *self, const char *header_format, const char *header_name, const char *entry_format, float value, int mode);
 
 //  *** Draft method, for development use, may change without warning ***
+//  Set the print level of the logger. All columns exceeding the current
+//  print level will not get printed.                                   
+IL_EXPORT void
+    il_log_set_print_level (il_log_t *self, int print_level);
+
+//  *** Draft method, for development use, may change without warning ***
+//  Set the print level of a column specified by its header name. The       
+//  column will not be printed if its print level exceed that of the logger.
+IL_EXPORT void
+    il_log_set_column_print_level (il_log_t *self, const char *header_name, int print_level);
+
+//  *** Draft method, for development use, may change without warning ***
 //  If the time specified by the print interval has passed since the last 
 //  time this method has produced output, the accumulated data will be    
 //  formatted and printed. Every 10th line, a newline and a header will be

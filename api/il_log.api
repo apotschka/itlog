@@ -34,6 +34,19 @@
         <return type = "boolean" />
     </method>
 
+    <method name = "set print level">
+        Set the print level of the logger. All columns exceeding the current
+        print level will not get printed.
+        <argument name = "print level" type = "integer" />
+    </method>
+
+    <method name = "set column print level">
+        Set the print level of a column specified by its header name. The
+        column will not be printed if its print level exceed that of the logger.
+        <argument name = "header name" type = "string" />
+        <argument name = "print level" type = "integer" />
+    </method>
+
     <method name = "print">
         If the time specified by the print interval has passed since the last
         time this method has produced output, the accumulated data will be
