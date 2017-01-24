@@ -196,7 +196,8 @@ il_log_test (bool verbose)
 
     const double data_max = 30.0;
     double data;
-    for (int run = 0; run < 2; run++) {
+    int run;
+    for (run = 0; run < 2; run++) {
         fprintf(stdout, "\nRun %s print interval.\n", run == 0? "without": "with");
         //  Loop with synthetic data
         for (data = 0.0; data < data_max; data += 1.0) {
