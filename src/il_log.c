@@ -22,7 +22,9 @@
 //  Structure of our class
 
 struct _il_log_t {
-    zhash_t *columns;  //  Column entries are saved in a hash.
+    zlist_t *header_list;  //  Column headers are saved in a list.
+    zlist_t *column_list;  //  Column entries are saved in a list.
+    zhash_t *columns;  //  Column entries are also saved in a hash.
     uint64_t n_lines_printed;  //  Number of lines printed.
     int64_t last_time;  //  Time of last line printing [ms].
     int64_t print_interval;  //  Interval between line printings [ms].
@@ -39,6 +41,8 @@ il_log_new (void)
     il_log_t *self = (il_log_t *) zmalloc (sizeof (il_log_t));
     assert (self);
     //  Initialize class properties here
+    self->header_list = zlist_new ();
+    self->column_list = zlist_new ();
     self->columns = zhash_new ();
     self->n_lines_printed = 0;
     self->last_time = 0;
@@ -59,6 +63,8 @@ il_log_destroy (il_log_t **self_p)
         il_log_t *self = *self_p;
         //  Free class properties here
         zhash_destroy (&self->columns);
+        zlist_destroy (&self->column_list);
+        zlist_destroy (&self->header_list);
         //  Free object itself
         free (self);
         *self_p = NULL;
@@ -88,14 +94,16 @@ il_log_entry (il_log_t *self, const char *header_format, const char *header_name
     assert (self);
     il_column_t *col = (il_column_t *) zhash_lookup (self->columns, header_name);
     if (!col) {
+        int rc;
         new_column = true;
         col = il_column_new ();
-        int rc = zhash_insert (self->columns, header_name, col);
-        assert (rc == 0);
         col->header_format = header_format;
         col->entry_format = entry_format;
         col->mode = mode;
-        zhash_freefn (self->columns, header_name, free);
+        rc = zlist_append (self->header_list, (void *) header_name); assert (rc == 0);
+        rc = zlist_append (self->column_list, col); assert (rc == 0);
+        rc = zhash_insert (self->columns, header_name, col); assert (rc == 0);
+        zlist_freefn (self->column_list, col, free, true);
     }
     assert ("You cannot change the mode of a column" && mode == col->mode);
     switch (mode & 0xFF) {
@@ -104,8 +112,7 @@ il_log_entry (il_log_t *self, const char *header_format, const char *header_name
         case IL_LOG_USE_MIN: 
             if (col->modifier == 1.0)
                 col->data = value < col->data? value: col->data;
-            else
-            {
+            else {
                 col->data = value;
                 col->modifier = 1.0;
             }
@@ -113,13 +120,12 @@ il_log_entry (il_log_t *self, const char *header_format, const char *header_name
         case IL_LOG_USE_MAX: 
             if (col->modifier == 1.0)
                 col->data = value > col->data? value: col->data;
-            else
-            {
+            else {
                 col->data = value;
                 col->modifier = 1.0;
             }
             break;
-        default: assert ("Unknown IL_LOG_USE_<.> constant"); break;
+        default: assert ("Unknown IL_LOG_USE_<.> constant" && 0); break;
     }
     return new_column;
 }
@@ -145,21 +151,18 @@ il_log_print (il_log_t *self)
         //  Print header
         char *header_name;
         fprintf (self->file, "\n");
-        zlist_t *keys = zhash_keys (self->columns);
-        assert (keys);
-        header_name = (char *) zlist_first (keys);
-        col = (il_column_t *) zhash_first (self->columns);
+        header_name = (char *) zlist_first (self->header_list);
+        col = (il_column_t *) zlist_first (self->column_list);
         while (header_name && col) {
             fprintf (self->file, col->header_format, header_name);
-            header_name = (char *) zlist_next (keys);
-            col = (il_column_t *) zhash_next (self->columns);
+            header_name = (char *) zlist_next (self->header_list);
+            col = (il_column_t *) zlist_next (self->column_list);
         }
         fprintf (self->file, "\n");
         assert (header_name == NULL && col == NULL);
-        zlist_destroy (&keys);
     }
     //  Print and reset accumulated data
-    col = (il_column_t *) zhash_first (self->columns);
+    col = (il_column_t *) zlist_first (self->column_list);
     double data;
     while (col) {
         data = col->data;
@@ -176,7 +179,7 @@ il_log_print (il_log_t *self)
         fprintf (self->file, col->entry_format, data);
         col->data = 0.0;
         col->modifier = 0.0;
-        col = (il_column_t *) zhash_next (self->columns);
+        col = (il_column_t *) zlist_next (self->column_list);
     }
     fprintf (self->file, "\n");
 }
