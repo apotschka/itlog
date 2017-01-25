@@ -21,11 +21,22 @@
     </method>
 
     <method name = "entry">
-        Add or update an entry of the logger. If entries of the same header name
-        have been used before, the method accumulates the data and returns
-        false. If no entry exists yet, the method creates it and returns true.
+        Add or update an entry of the logger provided that the print level
+        argument does not exceed the print level of the logger. If entries of
+        the same header name have been used before, the method accumulates the
+        data and returns false. If no entry exists yet, the method creates it
+        and returns true. Possible modes for accumulation of data are
 
-        TODO: Describe different modes.
+        * IL_LOG_USE_LAST: Entry supplied last
+        * IL_LOG_USE_AVERAGE: Average of entries since last printing.
+        * IL_LOG_USE_MIN: Minimum of entries since last printing.
+        * IL_LOG_USE_MAX: Maximum of entries since last printing.
+
+        An additional flag IL_LOG_UNIT_INTERVAL can be set using "|" for special printing of
+        values between 0 and 1. In this case, the entry format should be shorter
+        than the header format by two characters.
+
+        <argument name = "print_level" type = "integer" />
         <argument name = "header format" type = "string" />
         <argument name = "header name" type = "string" />
         <argument name = "entry format" type = "string" />
@@ -37,13 +48,6 @@
     <method name = "set print level">
         Set the print level of the logger. All columns exceeding the current
         print level will not get printed.
-        <argument name = "print level" type = "integer" />
-    </method>
-
-    <method name = "set column print level">
-        Set the print level of a column specified by its header name. The
-        column will not be printed if its print level exceed that of the logger.
-        <argument name = "header name" type = "string" />
         <argument name = "print level" type = "integer" />
     </method>
 

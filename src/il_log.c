@@ -88,11 +88,13 @@ il_log_set_print_interval (il_log_t *self, int64_t _print_interval)
 //  Add or update an entry.
 
 bool
-il_log_entry (il_log_t *self, const char *header_format, const char *header_name, 
+il_log_entry (il_log_t *self, int print_level, const char *header_format, const char *header_name, 
         const char *entry_format, float value, int mode)
 {
-    bool new_column = false;
     assert (self);
+    if (print_level > self->print_level) return false;
+
+    bool new_column = false;
     il_column_t *col = (il_column_t *) zhash_lookup (self->columns, header_name);
     if (!col) {
         int rc;
@@ -106,6 +108,7 @@ il_log_entry (il_log_t *self, const char *header_format, const char *header_name
         rc = zhash_insert (self->columns, header_name, col); assert (rc == 0);
         zlist_freefn (self->column_list, col, free, true);
     }
+    col->print_level = print_level;
     assert ("You cannot change the mode of a column" && mode == col->mode);
     switch (mode & 0xFF) {
         case IL_LOG_USE_LAST: col->data = value; break;
@@ -140,19 +143,6 @@ il_log_set_print_level (il_log_t *self, int print_level)
 {
     assert (self);
     self->print_level = print_level;
-}
-
-
-//  --------------------------------------------------------------------------
-//  Set print level of a column.
-
-void
-il_log_set_column_print_level (il_log_t *self, const char *header_name, int print_level)
-{
-    assert (self);
-    il_column_t *col = (il_column_t *) zhash_lookup (self->columns, header_name);
-    if (col)
-        col->print_level = print_level;
 }
 
 
@@ -231,6 +221,7 @@ il_log_test (bool verbose)
     //  Simple create/destroy test
     il_log_t *self = il_log_new ();
     assert (self);
+    il_log_set_print_level (self, 3);
 
     const double data_max = 30.0;
     double data;
@@ -240,19 +231,18 @@ il_log_test (bool verbose)
         //  Loop with synthetic data
         for (data = 0.0; data < data_max; data += 1.0) {
             zclock_sleep (30);
-            il_log_entry (self, "%10s", "last", "%10.0f", data, IL_LOG_USE_LAST);
-            il_log_entry (self, "%10s", "average", "%10.1f", data, IL_LOG_USE_AVERAGE);
-            il_log_entry (self, "%10s", "minimum", "%10.0f", data, IL_LOG_USE_MIN);
-            il_log_entry (self, "%10s", "maximum", "%10.0f", data, IL_LOG_USE_MAX);
-            il_log_entry (self, "%10s", "[0, 1]", "%7.1e", data / (data_max-1.0),
+            il_log_entry (self, 3, "%10s", "last", "%10.0f", data, IL_LOG_USE_LAST);
+            il_log_entry (self, 0, "%10s", "average", "%10.1f", data, IL_LOG_USE_AVERAGE);
+            il_log_entry (self, 0, "%10s", "minimum", "%10.0f", data, IL_LOG_USE_MIN);
+            il_log_entry (self, 0, "%10s", "maximum", "%10.0f", data, IL_LOG_USE_MAX);
+            il_log_entry (self, 0, "%10s", "[0, 1]", "%7.1e", data / (data_max-1.0),
                     IL_LOG_UNIT_INTERVAL | IL_LOG_USE_LAST);
             il_log_print (self);
         }
         //  Switch on print interval
         il_log_set_print_interval (self, 50);
-        //  Change print levels
+        //  Change print level
         il_log_set_print_level (self, 2);
-        il_log_set_column_print_level (self, "last", 3);
     }
     il_log_destroy (&self);
     //  @end

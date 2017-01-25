@@ -44,25 +44,28 @@ IL_EXPORT void
     il_log_set_print_interval (il_log_t *self, int64_t interval);
 
 //  *** Draft method, for development use, may change without warning ***
-//  Add or update an entry of the logger. If entries of the same header name
-//  have been used before, the method accumulates the data and returns      
-//  false. If no entry exists yet, the method creates it and returns true.  
-//                                                                          
-//  TODO: Describe different modes.                                         
+//  Add or update an entry of the logger provided that the print level                  
+//  argument does not exceed the print level of the logger. If entries of               
+//  the same header name have been used before, the method accumulates the              
+//  data and returns false. If no entry exists yet, the method creates it               
+//  and returns true. Possible modes for accumulation of data are                       
+//                                                                                      
+//  * IL_LOG_USE_LAST: Entry supplied last                                              
+//  * IL_LOG_USE_AVERAGE: Average of entries since last printing.                       
+//  * IL_LOG_USE_MIN: Minimum of entries since last printing.                           
+//  * IL_LOG_USE_MAX: Maximum of entries since last printing.                           
+//                                                                                      
+//  An additional flag IL_LOG_UNIT_INTERVAL can be set using "|" for special printing of
+//  values between 0 and 1. In this case, the entry format should be shorter            
+//  than the header format by two characters.                                           
 IL_EXPORT bool
-    il_log_entry (il_log_t *self, const char *header_format, const char *header_name, const char *entry_format, float value, int mode);
+    il_log_entry (il_log_t *self, int print_level, const char *header_format, const char *header_name, const char *entry_format, float value, int mode);
 
 //  *** Draft method, for development use, may change without warning ***
 //  Set the print level of the logger. All columns exceeding the current
 //  print level will not get printed.                                   
 IL_EXPORT void
     il_log_set_print_level (il_log_t *self, int print_level);
-
-//  *** Draft method, for development use, may change without warning ***
-//  Set the print level of a column specified by its header name. The       
-//  column will not be printed if its print level exceed that of the logger.
-IL_EXPORT void
-    il_log_set_column_print_level (il_log_t *self, const char *header_name, int print_level);
 
 //  *** Draft method, for development use, may change without warning ***
 //  If the time specified by the print interval has passed since the last 
