@@ -60,8 +60,9 @@ install:
   - cmd: msbuild /v:minimal /maxcpucount:%NUMBER_OF_PROCESSORS% /p:Configuration=%Configuration% czmq.vcxproj
   - cmd: set CZMQ_INCLUDE_DIR="%CZMQ_SOURCEDIR%\include"
   - cmd: set CZMQ_LIBRARY_DIR="%CZMQ_BUILDDIR%\lib\%Configuration%"
-  - cmd: cd "%CZMQ_LIBRARY_DIR%"
-  - cmd: echo "%CZMQ_LIBRARY_DIR%"
+  - cmd: echo "'%CZMQ_LIBRARY_DIR%'"
+  - cmd: cd lib
+  - cmd: cd "'%Configuration%'"
   - cmd: dir
   - cmd: cd "%CZMQ_BUILDDIR%"
   - cmd: move "%CZMQ_LIBRARY_DIR%\czmq-*lib" "%CZMQ_LIBRARY_DIR%\czmq.lib"
