@@ -59,13 +59,7 @@ install:
   - cmd: cmake -D CMAKE_INCLUDE_PATH="%SODIUM_INCLUDE_DIR%;%ZEROMQ_INCLUDE_DIR%" -D CMAKE_LIBRARY_PATH="%SODIUM_LIBRARY_DIR%;%ZEROMQ_LIBRARY_DIR%" -D CMAKE_CXX_FLAGS_RELEASE="/MT" -D CMAKE_CXX_FLAGS_DEBUG="/MTd" -G "%CMAKE_GENERATOR%" %CZMQ_SOURCEDIR%
   - cmd: msbuild /v:minimal /maxcpucount:%NUMBER_OF_PROCESSORS% /p:Configuration=%Configuration% czmq.vcxproj
   - cmd: set CZMQ_INCLUDE_DIR="%CZMQ_SOURCEDIR%\include"
-  - cmd: set CZMQ_LIBRARY_DIR="%CZMQ_BUILDDIR%\lib\%Configuration%"
-  - cmd: echo "'%CZMQ_LIBRARY_DIR%'"
-  - cmd: cd lib
-  - cmd: cd "'%Configuration%'"
-  - cmd: dir
-  - cmd: cd "%CZMQ_BUILDDIR%"
-  - cmd: move "%CZMQ_LIBRARY_DIR%\czmq-*lib" "%CZMQ_LIBRARY_DIR%\czmq.lib"
+  - cmd: set CZMQ_LIBRARY_DIR="%CZMQ_BUILDDIR%\%Configuration%"
 
 clone_folder: C:\projects\itlog
 
