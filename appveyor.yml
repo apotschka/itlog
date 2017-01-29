@@ -78,7 +78,7 @@ after_build:
   - cmd: cd "%ITLOG_BUILDDIR%\%Configuration%"
   - cmd: copy "%SODIUM_LIBRARY_DIR%\libsodium.dll" .
   - cmd: copy "%LIBZMQ_BUILDDIR%\bin\%Configuration%\libzmq-*dll" .
-  - cmd: copy "%CZMQ_LIBRARY_DIR\czmq.dll" .
+  - cmd: copy "%CZMQ_LIBRARY_DIR%\czmq.dll" .
   - cmd: 7z a -y -bd -mx=9 itlog.zip zmakecert.exe itlog_selftest.exe itlog.dll czmq.dll libsodium.dll libzmq-*.dll
   - ps: Push-AppveyorArtifact "itlog.zip" -Filename "itlog-${env:Platform}-${env:Configuration}.zip"
   - cmd: cd "%ITLOG_BUILDDIR%"
