@@ -199,10 +199,6 @@ target_link_libraries(
     ${CZMQ_LIBRARIES}
     ${OPTIONAL_LIBRARIES}
 )
-set_target_properties(
-    il_selftest
-    PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${SOURCE_DIR}/src"
-)
 
 ########################################################################
 # tests

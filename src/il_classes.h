@@ -23,6 +23,14 @@
 //  External API
 #include "../include/itlog.h"
 
+//  Extra headers
+
+//  Opaque class structures to allow forward references
+#ifndef IL_COLUMN_T_DEFINED
+typedef struct _il_column_t il_column_t;
+#define IL_COLUMN_T_DEFINED
+#endif
+
 //  Internal API
 #include "il_column.h"
 
