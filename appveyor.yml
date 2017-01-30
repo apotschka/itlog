@@ -32,6 +32,7 @@ init:
   - cmd: reg add "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp" /v UserAuthentication /t REG_DWORD /d 0 /f
 
 install:
+  - cinst: cygwin
   - cmd: if "%Platform%"=="x64" set "CMAKE_GENERATOR=%CMAKE_GENERATOR% Win64"
   - cmd: echo "Generator='%CMAKE_GENERATOR%'"
   - cmd: echo "Platform='%Platform%'"
@@ -81,7 +82,7 @@ after_build:
   - cmd: copy "%CZMQ_LIBRARY_DIR%\czmq.dll" .
   - cmd: copy "C:\projects\itlog\src\%Configuration%\il_selftest.exe" .
   - cmd: il_selftest.exe
-  - cmd: dumpbin /dependents il_selftest.exe
+  - cmd: ldd il_selftest.exe
   - cmd: 7z a -y -bd -mx=9 itlog.zip il_selftest.exe il.dll czmq.dll libsodium.dll libzmq-*.dll
   - ps: Push-AppveyorArtifact "itlog.zip" -Filename "itlog-${env:Platform}-${env:Configuration}.zip"
   - cmd: cd "%ITLOG_BUILDDIR%"
