@@ -83,6 +83,10 @@ after_build:
   - cmd: copy "C:\projects\itlog\src\%Configuration%\il_selftest.exe" .
   - cmd: il_selftest.exe
   - cmd: ldd il_selftest.exe
+  - cmd: ldd il.dll
+  - cmd: ldd czmq.dll
+  - cmd: ldd libsodium.dll
+  - cmd: ldd libzmq-*.dll
   - cmd: 7z a -y -bd -mx=9 itlog.zip il_selftest.exe il.dll czmq.dll libsodium.dll libzmq-*.dll
   - ps: Push-AppveyorArtifact "itlog.zip" -Filename "itlog-${env:Platform}-${env:Configuration}.zip"
   - cmd: cd "%ITLOG_BUILDDIR%"
