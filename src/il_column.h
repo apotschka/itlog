@@ -17,7 +17,8 @@
 extern "C" {
 #endif
 
-typedef struct _il_column_t
+//  The full struct is part of the internal API to avoid getter/setter routines.
+struct _il_column_t
 {
     const char *header_format;  //  Format string for the header line, e.g., "%8s".
     const char *entry_format;  //  Format string for the data, e.g., " %7.2e".
@@ -25,7 +26,7 @@ typedef struct _il_column_t
     double modifier;  //  A modifier for the representation of data;
     int mode;  //  Data accumulation mode.
     int print_level;  //  Print level of entry.
-} il_column_t;
+};
 
 //  @interface
 //  Create a new il_column
