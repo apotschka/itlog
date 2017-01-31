@@ -5,6 +5,9 @@
     license = "MPLv2"
     prefix = "il"
     libname = "libitlog"
+    email = "potschka@iwr.uni-heidelberg.de"
+    url = "https://github.com/apotschka/itlog"
+    repository = "https://github.com/apotschka/itlog"
     >
     <version major = "0" minor = "1" />
     <include filename = "license.xml" />

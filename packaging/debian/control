@@ -11,7 +11,7 @@
 Source:         itlog
 Section:        net
 Priority:       optional
-Maintainer:     itlog Developers <email@hostname.com>
+Maintainer:     itlog Developers <potschka@iwr.uni-heidelberg.de>
 Standards-Version: 3.9.7
 Build-Depends: debhelper (>= 9),
     pkg-config,

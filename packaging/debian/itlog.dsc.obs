@@ -2,7 +2,7 @@ Format: 3.0 (quilt)
 Binary: itlog
 Source: itlog
 Version: 0.1.0
-Maintainer: itlog Developers <email@hostname.com>
+Maintainer: itlog Developers <potschka@iwr.uni-heidelberg.de>
 Architecture: any
 Build-Depends: debhelper (>= 9),
     pkg-config,

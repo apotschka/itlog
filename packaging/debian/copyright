@@ -2,7 +2,7 @@ Format: http://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
 Upstream-Name: itlog
 
 Files: *
-Copyright: 2015- itlog Developers <email@hostname.com>
+Copyright: 2015- itlog Developers <potschka@iwr.uni-heidelberg.de>
 License: itlog_license
  Copyright (c) the Contributors as noted in the AUTHORS file.       
  This file is part of the IterationLogger library.                  
