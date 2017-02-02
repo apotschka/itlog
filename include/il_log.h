@@ -39,9 +39,9 @@ IL_EXPORT void
     il_log_destroy (il_log_t **self_p);
 
 //  *** Draft method, for development use, may change without warning ***
-//  Set the print interval in microseconds.
+//  Set the output interval in microseconds.
 IL_EXPORT void
-    il_log_set_print_interval (il_log_t *self, int64_t interval);
+    il_log_set_output_interval (il_log_t *self, int64_t interval);
 
 //  *** Draft method, for development use, may change without warning ***
 //  Add or update an entry of the logger provided that the print level                  
@@ -59,7 +59,7 @@ IL_EXPORT void
 //  values between 0 and 1. In this case, the entry format should be shorter            
 //  than the header format by two characters.                                           
 IL_EXPORT bool
-    il_log_entry (il_log_t *self, int print_level, const char *header_format, const char *header_name, const char *entry_format, float value, int mode);
+    il_log_entry (il_log_t *self, int print_level, const char *header_format, const char *header_name, const char *entry_format, double value, int mode);
 
 //  *** Draft method, for development use, may change without warning ***
 //  Set the print level of the logger. All columns exceeding the current
@@ -68,13 +68,13 @@ IL_EXPORT void
     il_log_set_print_level (il_log_t *self, int print_level);
 
 //  *** Draft method, for development use, may change without warning ***
-//  If the time specified by the print interval has passed since the last 
-//  time this method has produced output, the accumulated data will be    
+//  If the time specified by the output interval has passed since the last
+//  time this method has printed a line, the accumulated data will be     
 //  formatted and printed. Every 10th line, a newline and a header will be
 //  printed. The accumulated data of all entries will be reset.  If not   
 //  enough time has passed, nothing happens.                              
 IL_EXPORT void
-    il_log_print (il_log_t *self);
+    il_log_output_line (il_log_t *self);
 
 //  *** Draft method, for development use, may change without warning ***
 //  Usage example and self test.

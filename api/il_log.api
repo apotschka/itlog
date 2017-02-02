@@ -15,8 +15,8 @@
         Destructor.
     </destructor>
 
-    <method name = "set print interval">
-        Set the print interval in microseconds.
+    <method name = "set output interval">
+        Set the output interval in microseconds.
         <argument name = "interval" type = "msecs" />
     </method>
 
@@ -40,7 +40,7 @@
         <argument name = "header format" type = "string" />
         <argument name = "header name" type = "string" />
         <argument name = "entry format" type = "string" />
-        <argument name = "value" type = "real" />
+        <argument name = "value" type = "real" size = "8" />
         <argument name = "mode" type = "integer" />
         <return type = "boolean" />
     </method>
@@ -51,9 +51,9 @@
         <argument name = "print level" type = "integer" />
     </method>
 
-    <method name = "print">
-        If the time specified by the print interval has passed since the last
-        time this method has produced output, the accumulated data will be
+    <method name = "output line">
+        If the time specified by the output interval has passed since the last
+        time this method has printed a line, the accumulated data will be
         formatted and printed. Every 10th line, a newline and a header will be
         printed. The accumulated data of all entries will be reset.  If not
         enough time has passed, nothing happens.

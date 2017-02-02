@@ -27,7 +27,7 @@ struct _il_log_t {
     zhash_t *columns;  //  Column entries are also saved in a hash.
     uint64_t n_lines_printed;  //  Number of lines printed.
     int64_t last_time;  //  Time of last line printing [ms].
-    int64_t print_interval;  //  Interval between line printings [ms].
+    int64_t output_interval;  //  Interval between line outputs [ms].
     int print_level;
     FILE *file;  //  Output file (default: stdout).
 };
@@ -47,7 +47,7 @@ il_log_new (void)
     self->columns = zhash_new ();
     self->n_lines_printed = 0;
     self->last_time = 0;
-    self->print_interval = 0;
+    self->output_interval = 0;
     self->file = stdout;
     return self;
 }
@@ -74,13 +74,13 @@ il_log_destroy (il_log_t **self_p)
 
 
 //  --------------------------------------------------------------------------
-//  Set print interval.
+//  Set output interval.
 
 void
-il_log_set_print_interval (il_log_t *self, int64_t _print_interval)
+il_log_set_output_interval (il_log_t *self, int64_t interval)
 {
     assert (self);
-    self->print_interval = _print_interval;
+    self->output_interval = interval;
 }
 
 
@@ -89,7 +89,7 @@ il_log_set_print_interval (il_log_t *self, int64_t _print_interval)
 
 bool
 il_log_entry (il_log_t *self, int print_level, const char *header_format, const char *header_name, 
-        const char *entry_format, float value, int mode)
+        const char *entry_format, double value, int mode)
 {
     assert (self);
     if (print_level > self->print_level) return false;
@@ -150,13 +150,13 @@ il_log_set_print_level (il_log_t *self, int print_level)
 //  Print out accumulated data.
 
 void
-il_log_print (il_log_t *self)
+il_log_output_line (il_log_t *self)
 {
     assert (self);
 
-    if (self->print_interval > 0) {
+    if (self->output_interval > 0) {
         int64_t now = zclock_mono ();
-        if (now < self->last_time + self->print_interval)
+        if (now < self->last_time + self->output_interval)
             return;
         self->last_time = now;
     }
@@ -237,10 +237,10 @@ il_log_test (bool verbose)
             il_log_entry (self, 0, "%10s", "maximum", "%10.0f", data, IL_LOG_USE_MAX);
             il_log_entry (self, 0, "%10s", "[0, 1]", "%7.1e", data / (data_max-1.0),
                     IL_LOG_UNIT_INTERVAL | IL_LOG_USE_LAST);
-            il_log_print (self);
+            il_log_output_line (self);
         }
-        //  Switch on print interval
-        il_log_set_print_interval (self, 50);
+        //  Switch on output interval
+        il_log_set_output_interval (self, 50);
         //  Change print level
         il_log_set_print_level (self, 2);
     }

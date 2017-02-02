@@ -16,6 +16,7 @@
     <target name = "debian" />
     <target name = "travis" />
     <target name = "vs2015" />
+    <target name = "python" />
 
     <class name = "il_column" private = "1">Column data container.</class>
 
