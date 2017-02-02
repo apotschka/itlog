@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 from itlog import IlLog
 
 log = IlLog()
