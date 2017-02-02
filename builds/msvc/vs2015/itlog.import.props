@@ -20,17 +20,17 @@
   <ItemDefinitionGroup>
     <ClCompile>
       <AdditionalIncludeDirectories>$(ProjectDir)..\..\..\..\..\itlog\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions Condition="'$(Linkage-il)' == 'static' Or '$(Linkage-il)' == 'ltcg'">IL_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions Condition="'$(Linkage-itlog)' == 'static' Or '$(Linkage-itlog)' == 'ltcg'">IL_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
-      <AdditionalDependencies Condition="'$(Linkage-il)' != ''">libitlog.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories Condition="$(Configuration.IndexOf('Debug')) != -1">$(ProjectDir)..\..\..\..\..\itlog\bin\$(PlatformName)\Debug\$(PlatformToolset)\$(Linkage-il)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalLibraryDirectories Condition="$(Configuration.IndexOf('Release')) != -1">$(ProjectDir)..\..\..\..\..\itlog\bin\$(PlatformName)\Release\$(PlatformToolset)\$(Linkage-il)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies Condition="'$(Linkage-itlog)' != ''">libitlog.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories Condition="$(Configuration.IndexOf('Debug')) != -1">$(ProjectDir)..\..\..\..\..\itlog\bin\$(PlatformName)\Debug\$(PlatformToolset)\$(Linkage-itlog)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories Condition="$(Configuration.IndexOf('Release')) != -1">$(ProjectDir)..\..\..\..\..\itlog\bin\$(PlatformName)\Release\$(PlatformToolset)\$(Linkage-itlog)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
 
   <!-- Copy -->
-  <Target Name="Linkage-il-dynamic" AfterTargets="AfterBuild" Condition="'$(Linkage-il)' == 'dynamic'">
+  <Target Name="Linkage-itlog-dynamic" AfterTargets="AfterBuild" Condition="'$(Linkage-itlog)' == 'dynamic'">
     <Copy Condition="$(Configuration.IndexOf('Debug')) != -1"
           SourceFiles="$(ProjectDir)..\..\..\..\..\itlog\bin\$(PlatformName)\Debug\$(PlatformToolset)\dynamic\libitlog.dll"
           DestinationFiles="$(TargetDir)libitlog.dll"
@@ -46,7 +46,7 @@
   </Target>
 
   <!-- Messages -->
-  <Target Name="itlog-info" BeforeTargets="AfterBuild" Condition="'$(Linkage-il)' == 'dynamic'">
+  <Target Name="itlog-info" BeforeTargets="AfterBuild" Condition="'$(Linkage-itlog)' == 'dynamic'">
     <Message Text="Copying libitlog.dll -&gt; $(TargetDir)libitlog.dll" Importance="high"/>
     <Message Text="Copying libitlog.pdb -&gt; $(TargetDir)libitlog.pdb" Importance="high" Condition="$(Configuration.IndexOf('Debug')) != -1" />
   </Target>

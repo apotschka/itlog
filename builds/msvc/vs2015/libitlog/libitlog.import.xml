@@ -6,14 +6,14 @@
 ################################################################################
 -->
 <ProjectSchemaDefinitions xmlns="clr-namespace:Microsoft.Build.Framework.XamlTypes;assembly=Microsoft.Build.Framework">
-  <Rule Name="il-linkage-uiextension" PageTemplate="tool" DisplayName="Local Dependencies" SwitchPrefix="/" Order="1">
+  <Rule Name="itlog-linkage-uiextension" PageTemplate="tool" DisplayName="Local Dependencies" SwitchPrefix="/" Order="1">
     <Rule.Categories>
       <Category Name="libitlog" DisplayName="itlog" />
     </Rule.Categories>
     <Rule.DataSource>
       <DataSource Persistence="ProjectFile" ItemType="" />
     </Rule.DataSource>
-    <EnumProperty Name="Linkage-il" DisplayName="Linkage" Description="How itlog will be linked into the output of this project" Category="il">
+    <EnumProperty Name="Linkage-itlog" DisplayName="Linkage" Description="How itlog will be linked into the output of this project" Category="itlog">
       <EnumValue Name="" DisplayName="Not linked" />
       <EnumValue Name="dynamic" DisplayName="Dynamic (DLL)" />
       <EnumValue Name="static" DisplayName="Static (LIB)" />

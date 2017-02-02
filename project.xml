@@ -4,7 +4,7 @@
     script = "zproject.gsl"
     license = "MPLv2"
     prefix = "il"
-    libname = "libitlog"
+    linkname = "itlog"
     email = "potschka@iwr.uni-heidelberg.de"
     url = "https://github.com/apotschka/itlog"
     repository = "https://github.com/apotschka/itlog"

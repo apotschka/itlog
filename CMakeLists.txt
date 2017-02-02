@@ -125,38 +125,38 @@ install(FILES ${il_headers} DESTINATION include)
 # library
 ########################################################################
 include_directories("${SOURCE_DIR}/src" "${SOURCE_DIR}/include")
-set (il_sources
+set (itlog_sources
     src/il_column.c
 )
 
 IF (ENABLE_DRAFTS)
-    list (APPEND il_sources
+    list (APPEND itlog_sources
         src/il_log.c
     )
 ENDIF (ENABLE_DRAFTS)
 
 IF (ENABLE_DRAFTS)
-    list (APPEND il_sources
+    list (APPEND itlog_sources
         src/il_private_selftest.c
     )
 ENDIF (ENABLE_DRAFTS)
 
-source_group("Source Files" FILES ${il_sources})
+source_group("Source Files" FILES ${itlog_sources})
 if (NOT DEFINED BUILD_SHARED_LIBS)
     SET(BUILD_SHARED_LIBS ON)
 endif()
-add_library(il ${il_sources})
-set_target_properties(il
+add_library(itlog ${itlog_sources})
+set_target_properties(itlog
     PROPERTIES DEFINE_SYMBOL "IL_EXPORTS"
 )
-set_target_properties (il
+set_target_properties (itlog
     PROPERTIES SOVERSION "0.0.0"
 )
-target_link_libraries(il
+target_link_libraries(itlog
     ${ZEROMQ_LIBRARIES} ${MORE_LIBRARIES}
 )
 
-install(TARGETS il
+install(TARGETS itlog
     LIBRARY DESTINATION "lib${LIB_SUFFIX}" # .so file
     ARCHIVE DESTINATION "lib${LIB_SUFFIX}" # .lib file
     RUNTIME DESTINATION bin              # .dll file
@@ -194,7 +194,7 @@ add_executable(
 )
 target_link_libraries(
     il_selftest
-    il
+    itlog
     ${LIBZMQ_LIBRARIES}
     ${CZMQ_LIBRARIES}
     ${OPTIONAL_LIBRARIES}
