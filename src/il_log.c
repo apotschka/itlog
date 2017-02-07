@@ -230,7 +230,7 @@ il_log_test (bool verbose)
         fprintf(stdout, "\nRun %s print interval.\n", run == 0? "without": "with");
         //  Loop with synthetic data
         for (data = 0.0; data < data_max; data += 1.0) {
-            zclock_sleep (30);
+            zclock_sleep (3);
             il_log_entry (self, 3, "%10s", "last", "%10.0f", data, IL_LOG_USE_LAST);
             il_log_entry (self, 0, "%10s", "average", "%10.1f", data, IL_LOG_USE_AVERAGE);
             il_log_entry (self, 0, "%10s", "minimum", "%10.0f", data, IL_LOG_USE_MIN);
@@ -240,7 +240,7 @@ il_log_test (bool verbose)
             il_log_output_line (self);
         }
         //  Switch on output interval
-        il_log_set_output_interval (self, 50);
+        il_log_set_output_interval (self, 5);
         //  Change print level
         il_log_set_print_level (self, 2);
     }
