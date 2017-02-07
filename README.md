@@ -33,6 +33,7 @@ Read the book [Scalable C](https://www.gitbook.com/book/hintjens/scalable-c/deta
 Example
 -------
 The following code is the self test of the `il_log` class.
+
     //  Log two runs of the same data with different output intervals and print levels.
     il_log_t *self = il_log_new ();
     assert (self);
@@ -61,7 +62,9 @@ The following code is the self test of the `il_log` class.
     }
     il_log_destroy (&self);
     assert (self == NULL);
-It produces the output
+
+It produces the following output:
+
 ```out
     Running itlog selftests...
      * il_log: 

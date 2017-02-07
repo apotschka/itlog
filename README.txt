@@ -28,8 +28,9 @@ Read the book [Scalable C](https://www.gitbook.com/book/hintjens/scalable-c/deta
 Example
 -------
 The following code is the self test of the `il_log` class.
+
 .pull src/il_log.c@selftest,code,left
-It produces the output
-.- Generate the file selftest.out first via 
-.- $ src/il_selftest 1> selftest.out
+
+It produces the following output:
+
 .pull selftest.out,code
