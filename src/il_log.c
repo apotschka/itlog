@@ -218,7 +218,7 @@ il_log_test (bool verbose)
     printf (" * il_log: ");
 
     //  @selftest
-    //  Simple create/destroy test
+    //  Log two runs of the same data with different output intervals and print levels.
     il_log_t *self = il_log_new ();
     assert (self);
     il_log_set_print_level (self, 3);
@@ -245,6 +245,7 @@ il_log_test (bool verbose)
         il_log_set_print_level (self, 2);
     }
     il_log_destroy (&self);
+    assert (self == NULL);
     //  @end
     printf ("OK\n");
 }
