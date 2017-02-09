@@ -1,67 +1,75 @@
 
-<A name="toc1-3" title="libitlog" />
+<A name="toc1-3" title="libitlog"></A>
 libitlog
 ========
+
 A portable logger for monitoring iterative numerical algorithms.
 
-<A name="toc2-8" title="Purpose" />
+<A name="toc2-9" title="Purpose"></A>
 Purpose
 -------
+
 The library libitlog helps you to visualize the iterations of your numerical
 algorithm in a tabular manner by supporting and encouraging you to monitor
 important quantities of your computation. It is written in C with a
 focus on portability.
 
-<A name="toc2-16" title="License" />
+<A name="toc2-18" title="License"></A>
 License
 -------
+
 This Source Code Form is subject to the terms of the Mozilla Public License, v.
 2.0. If a copy of the MPL was not distributed with this file, you can obtain one
-at http://mozilla.org/MPL/2.0/.
+at <http://mozilla.org/MPL/2.0/>.
 
-<A name="toc2-23" title="Contribution policy" />
+<A name="toc2-26" title="Contribution policy"></A>
 Contribution policy
 -------------------
+
 Please fork your own repository and supply updates via pull requests.
 
-<A name="toc2-28" title="Style guide" />
+<A name="toc2-32" title="Style guide"></A>
 Style guide
 -----------
+
 Read the book [Scalable C](https://www.gitbook.com/book/hintjens/scalable-c/details).
 
-<A name="toc2-33" title="Example" />
+<A name="toc2-38" title="Example"></A>
 Example
 -------
+
 The following code is the self test of the `il_log` class.
 
-    //  Log two runs of the same data with different output intervals and print levels.
-    il_log_t *self = il_log_new ();
-    assert (self);
-    il_log_set_print_level (self, 3);
-
-    const double data_max = 30.0;
-    double data;
-    int run;
-    for (run = 0; run < 2; run++) {
-        fprintf(stdout, "\nRun %s print interval.\n", run == 0? "without": "with");
-        //  Loop with synthetic data
-        for (data = 0.0; data < data_max; data += 1.0) {
-            zclock_sleep (30);
-            il_log_entry (self, 3, "%10s", "last", "%10.0f", data, IL_LOG_USE_LAST);
-            il_log_entry (self, 0, "%10s", "average", "%10.1f", data, IL_LOG_USE_AVERAGE);
-            il_log_entry (self, 0, "%10s", "minimum", "%10.0f", data, IL_LOG_USE_MIN);
-            il_log_entry (self, 0, "%10s", "maximum", "%10.0f", data, IL_LOG_USE_MAX);
-            il_log_entry (self, 0, "%10s", "[0, 1]", "%7.1e", data / (data_max-1.0),
-                    IL_LOG_UNIT_INTERVAL | IL_LOG_USE_LAST);
-            il_log_output_line (self);
+```c
+        //  Log two runs of the same data with different output intervals and print levels.
+        il_log_t *self = il_log_new ();
+        assert (self);
+        il_log_set_print_level (self, 3);
+    
+        const double data_max = 30.0;
+        double data;
+        int run;
+        for (run = 0; run < 2; run++) {
+            fprintf(stdout, "\nRun %s print interval.\n", run == 0? "without": "with");
+            //  Loop with synthetic data
+            for (data = 0.0; data < data_max; data += 1.0) {
+                zclock_sleep (3);
+                il_log_entry (self, 3, "%10s", "last", "%10.0f", data, IL_LOG_USE_LAST);
+                il_log_entry (self, 0, "%10s", "average", "%10.1f", data, IL_LOG_USE_AVERAGE);
+                il_log_entry (self, 0, "%10s", "minimum", "%10.0f", data, IL_LOG_USE_MIN);
+                il_log_entry (self, 0, "%10s", "maximum", "%10.0f", data, IL_LOG_USE_MAX);
+                il_log_entry (self, 0, "%10s", "[0, 1]", "%7.1e", data / (data_max-1.0),
+                        IL_LOG_UNIT_INTERVAL | IL_LOG_USE_LAST);
+                il_log_output_line (self);
+            }
+            //  Switch on output interval
+            il_log_set_output_interval (self, 5);
+            //  Change print level
+            il_log_set_print_level (self, 2);
         }
-        //  Switch on output interval
-        il_log_set_output_interval (self, 50);
-        //  Change print level
-        il_log_set_print_level (self, 2);
-    }
-    il_log_destroy (&self);
-    assert (self == NULL);
+        il_log_destroy (&self);
+        assert (self == NULL);
+```
 
 It produces the following output:
 
