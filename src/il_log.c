@@ -111,8 +111,13 @@ il_log_entry (il_log_t *self, int print_level, const char *header_format, const 
     col->print_level = print_level;
     assert ("You cannot change the mode of a column" && mode == col->mode);
     switch (mode & 0xFF) {
-        case IL_LOG_USE_LAST: col->data = value; break;
-        case IL_LOG_USE_AVERAGE: col->data += value; col->modifier += 1.0; break;
+        case IL_LOG_USE_LAST:
+            col->data = value;
+            break;
+        case IL_LOG_USE_AVERAGE:
+            col->data += value;
+            col->modifier += 1.0;
+            break;
         case IL_LOG_USE_MIN: 
             if (col->modifier == 1.0)
                 col->data = value < col->data? value: col->data;
@@ -129,7 +134,13 @@ il_log_entry (il_log_t *self, int print_level, const char *header_format, const 
                 col->modifier = 1.0;
             }
             break;
-        default: assert ("Unknown IL_LOG_USE_<.> constant" && 0); break;
+        case IL_LOG_USE_SUM:
+            col->data += value;
+            col->modifier = 1.0;
+            break;
+        default:
+            assert ("Mode argument not a IL_LOG_USE_<.> constant" && 0);
+            break;
     }
     return new_column;
 }
@@ -227,7 +238,7 @@ il_log_test (bool verbose)
     double data;
     int run;
     for (run = 0; run < 2; run++) {
-        fprintf(stdout, "\nRun %s print interval.\n", run == 0? "without": "with");
+        fprintf(stdout, "\nRun %s output interval.\n", run == 0? "without": "with");
         //  Loop with synthetic data
         for (data = 0.0; data < data_max; data += 1.0) {
             zclock_sleep (3);
@@ -235,6 +246,7 @@ il_log_test (bool verbose)
             il_log_entry (self, 0, "%10s", "average", "%10.1f", data, IL_LOG_USE_AVERAGE);
             il_log_entry (self, 0, "%10s", "minimum", "%10.0f", data, IL_LOG_USE_MIN);
             il_log_entry (self, 0, "%10s", "maximum", "%10.0f", data, IL_LOG_USE_MAX);
+            il_log_entry (self, 0, "%10s", "sum", "%10.0f", data, IL_LOG_USE_SUM);
             il_log_entry (self, 0, "%10s", "[0, 1]", "%7.1e", data / (data_max-1.0),
                     IL_LOG_UNIT_INTERVAL | IL_LOG_USE_LAST);
             il_log_output_line (self);

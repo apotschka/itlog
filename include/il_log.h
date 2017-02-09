@@ -26,6 +26,7 @@ extern "C" {
 #define IL_LOG_USE_AVERAGE 2                // Log average of entries since last log line.
 #define IL_LOG_USE_MIN 3                    // Log minimum of entries since last log line.
 #define IL_LOG_USE_MAX 4                    // Log maximum of entries since last log line.
+#define IL_LOG_USE_SUM 5                    // Log sum of entries since last log line.
 #define IL_LOG_UNIT_INTERVAL 0x100          // Flag for special printing of values in [0,1].
 
 //  *** Draft method, for development use, may change without warning ***
@@ -54,10 +55,11 @@ IL_EXPORT void
 //  * IL_LOG_USE_AVERAGE: Average of entries since last printing.                       
 //  * IL_LOG_USE_MIN: Minimum of entries since last printing.                           
 //  * IL_LOG_USE_MAX: Maximum of entries since last printing.                           
+//  * IL_LOG_USE_SUM: Sum of entries since last printing.                               
 //                                                                                      
 //  An additional flag IL_LOG_UNIT_INTERVAL can be set using "|" for special printing of
 //  values between 0 and 1. In this case, the entry format should be shorter            
-//  than the header format by two characters.                                           
+//  than the header format by three characters.                                         
 IL_EXPORT bool
     il_log_entry (il_log_t *self, int print_level, const char *header_format, const char *header_name, const char *entry_format, double value, int mode);
 
