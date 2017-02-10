@@ -110,6 +110,7 @@ set (il_headers
     include/il_library.h
     include/itlog.h
     src/il_column.h
+    src/il_fid_list.h
 )
 
 IF (ENABLE_DRAFTS)
@@ -127,6 +128,7 @@ install(FILES ${il_headers} DESTINATION include)
 include_directories("${SOURCE_DIR}/src" "${SOURCE_DIR}/include")
 set (itlog_sources
     src/il_column.c
+    src/il_fid_list.c
 )
 
 IF (ENABLE_DRAFTS)

@@ -1,3 +1,3 @@
 #!/bin/bash
-src/il_selftest 1> selftest.out
+src/il_selftest
 gitdown README.txt

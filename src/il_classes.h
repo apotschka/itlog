@@ -30,9 +30,14 @@
 typedef struct _il_column_t il_column_t;
 #define IL_COLUMN_T_DEFINED
 #endif
+#ifndef IL_FID_LIST_T_DEFINED
+typedef struct _il_fid_list_t il_fid_list_t;
+#define IL_FID_LIST_T_DEFINED
+#endif
 
 //  Internal API
 #include "il_column.h"
+#include "il_fid_list.h"
 
 //  *** To avoid double-definitions, only define if building without draft ***
 #ifndef IL_BUILD_DRAFT_API
@@ -41,6 +46,37 @@ typedef struct _il_column_t il_column_t;
 //  Self test of this class.
 IL_PRIVATE void
     il_column_test (bool verbose);
+
+//  *** Draft method, defined for internal use only ***
+//  Constructor.
+//  Caller owns return value and must destroy it when done.
+IL_PRIVATE il_fid_list_t *
+    il_fid_list_new (void);
+
+//  *** Draft method, defined for internal use only ***
+//  Destructor.
+IL_PRIVATE void
+    il_fid_list_destroy (il_fid_list_t **self_p);
+
+//  *** Draft method, defined for internal use only ***
+//  Add file descriptor to list.
+IL_PRIVATE void
+    il_fid_list_add (il_fid_list_t *self, FILE *fid);
+
+//  *** Draft method, defined for internal use only ***
+//  Remove file descriptor from list.
+IL_PRIVATE void
+    il_fid_list_remove (il_fid_list_t *self, FILE *fid);
+
+//  *** Draft method, defined for internal use only ***
+//  Print formatted string with variable argument list to all FILE descriptors in list.
+IL_PRIVATE void
+    il_fid_list_printf (il_fid_list_t *self, const char *format, ...) CHECK_PRINTF (2);
+
+//  *** Draft method, defined for internal use only ***
+//  Self test of this class.
+IL_PRIVATE void
+    il_fid_list_test (bool verbose);
 
 //  Self test for private classes
 IL_PRIVATE void

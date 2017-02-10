@@ -37,6 +37,6 @@ The following code is the self test of the `il_log` class.
 
 .pull src/il_log.c@selftest,code
 
-It produces the following output:
+It produces the following output in the file `il_selftest.txt`:
 
-.pull selftest.out,code
+.pull il_selftest.txt,code

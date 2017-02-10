@@ -30,6 +30,7 @@ il_private_selftest (bool verbose)
 {
 // Tests for stable private classes:
     il_column_test (verbose);
+    il_fid_list_test (verbose);
 }
 /*
 ################################################################################

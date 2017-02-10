@@ -54,11 +54,21 @@
     </method>
 
     <method name = "output line">
-        If the time specified by the output interval has passed since the last
-        time this method has printed a line, the accumulated data will be
-        formatted and printed. Every 10th line, a newline and a header will be
-        printed. The accumulated data of all entries will be reset.  If not
-        enough time has passed, nothing happens.
+        If the time specified by the output interval has passed since the last time this method has
+        printed a line, the accumulated data will be formatted and printed. Every 10th line, a
+        newline and a header will be printed. The accumulated data of all entries will be reset. If
+        not enough time has passed, nothing happens. The output will be printed to all files
+        registerd with `il_log_add_file`.
+    </method>
+
+    <method name = "add file">
+        Add another file descriptor to the list of output streams.
+        <argument name = "fid" type = "FILE" />
+    </method>
+
+    <method name = "remove file">
+        Remove file descriptor from the list of output streams.
+        <argument name = "fid" type = "FILE" />
     </method>
 
     <method name = "test" singleton = "1">

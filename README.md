@@ -46,6 +46,10 @@ The following code is the self test of the `il_log` class.
         assert (self);
         il_log_set_print_level (self, 3);
     
+        FILE *out_file = fopen ("il_selftest.txt", "w");
+        assert ("Could not open file" && out_file);
+        il_log_add_file (self, out_file);
+    
         const double data_max = 30.0;
         double data;
         int run;
@@ -68,16 +72,17 @@ The following code is the self test of the `il_log` class.
             //  Change print level
             il_log_set_print_level (self, 2);
         }
+    
+        il_log_remove_file (self, out_file);  //  not necessary, just testing here
+        fclose (out_file);
+    
         il_log_destroy (&self);
         assert (self == NULL);
 ```
 
-It produces the following output:
+It produces the following output in the file `il_selftest.txt`:
 
-```out
-    Running itlog selftests...
-     * il_log: 
-    Run without output interval.
+```txt
     
           last   average   minimum   maximum       sum    [0, 1]
              0       0.0         0         0         0   0.0e+00
@@ -115,8 +120,6 @@ It produces the following output:
             28      28.0        28        28        28 1-3.4e-02
             29      29.0        29        29        29 1-0.0e+00
     
-    Run with output interval.
-    
        average   minimum   maximum       sum    [0, 1]
            0.0         0         0         0   0.0e+00
            1.5         1         2         3   6.9e-02
@@ -135,9 +138,6 @@ It produces the following output:
           23.5        23        24        47 1-1.7e-01
           25.5        25        26        51 1-1.0e-01
           27.5        27        28        55 1-3.4e-02
-    OK
-     * il_column: OK
-    Tests passed OK
 ```
 
 _This documentation was generated from itlog/README.txt using [Gitdown](https://github.com/zeromq/gitdown)_

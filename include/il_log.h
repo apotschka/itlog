@@ -70,13 +70,23 @@ IL_EXPORT void
     il_log_set_print_level (il_log_t *self, int print_level);
 
 //  *** Draft method, for development use, may change without warning ***
-//  If the time specified by the output interval has passed since the last
-//  time this method has printed a line, the accumulated data will be     
-//  formatted and printed. Every 10th line, a newline and a header will be
-//  printed. The accumulated data of all entries will be reset.  If not   
-//  enough time has passed, nothing happens.                              
+//  If the time specified by the output interval has passed since the last time this method has
+//  printed a line, the accumulated data will be formatted and printed. Every 10th line, a     
+//  newline and a header will be printed. The accumulated data of all entries will be reset. If
+//  not enough time has passed, nothing happens. The output will be printed to all files       
+//  registerd with `il_log_add_file`.                                                          
 IL_EXPORT void
     il_log_output_line (il_log_t *self);
+
+//  *** Draft method, for development use, may change without warning ***
+//  Add another file descriptor to the list of output streams.
+IL_EXPORT void
+    il_log_add_file (il_log_t *self, FILE *fid);
+
+//  *** Draft method, for development use, may change without warning ***
+//  Remove file descriptor from the list of output streams.
+IL_EXPORT void
+    il_log_remove_file (il_log_t *self, FILE *fid);
 
 //  *** Draft method, for development use, may change without warning ***
 //  Usage example and self test.

@@ -23,6 +23,7 @@ include_HEADERS += \
 endif
 src_libitlog_la_SOURCES = \
     src/il_column.c \
+    src/il_fid_list.c \
     src/platform.h
 
 if ENABLE_DRAFTS
@@ -67,6 +68,7 @@ endif #ENABLE_IL_SELFTEST
 # Install api files into /usr/local/share/zproject
 apidir = @datadir@/zproject/itlog
 dist_api_DATA = \
+    api/il_fid_list.api \
     api/il_log.api
 
 # define custom target for all products of /src

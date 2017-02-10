@@ -39,6 +39,7 @@ endif
 
 EXTRA_DIST += \
     src/il_column.h \
+    src/il_fid_list.h \
     LICENSE \
     README.txt \
     README.md \

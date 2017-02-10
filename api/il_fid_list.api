@@ -1,0 +1,27 @@
+<class name = "il_fid_list" private = "1">
+    List of FILE descriptors for il_log output.
+
+    <constructor>
+        Constructor.
+    </constructor>
+
+    <destructor>
+        Destructor.
+    </destructor>
+
+    <method name = "add">
+        Add file descriptor to list.
+        <argument name = "fid" type = "FILE" />
+    </method>
+
+    <method name = "remove">
+        Remove file descriptor from list.
+        <argument name = "fid" type = "FILE" />
+    </method>
+
+    <method name = "printf">
+        Print formatted string with variable argument list to all FILE descriptors in list.
+        <argument name = "format" type = "format" />
+    </method>
+
+</class>

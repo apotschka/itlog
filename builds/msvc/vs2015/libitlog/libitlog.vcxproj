@@ -84,6 +84,9 @@
     <ClCompile Include="..\..\..\..\src\il_column.c">
       <CompileAs>CompileAsCpp</CompileAs>
     </ClCompile>
+    <ClCompile Include="..\..\..\..\src\il_fid_list.c">
+      <CompileAs>CompileAsCpp</CompileAs>
+    </ClCompile>
     <ClCompile Include="..\..\..\..\src\il_log.c">
       <CompileAs>CompileAsCpp</CompileAs>
     </ClCompile>

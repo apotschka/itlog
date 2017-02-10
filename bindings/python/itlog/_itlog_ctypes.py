@@ -45,6 +45,65 @@ class il_log_t(Structure):
     pass # Empty - only for type checking
 il_log_p = POINTER(il_log_t)
 
+class FILE(Structure):
+    pass # Empty - only for type checking
+FILE_p = POINTER(FILE)
+
+def return_py_file(c_file):
+    if not sys.version_info > (3,):
+        PyFile_FromFile_close_cb = CFUNCTYPE(c_int, FILE_p)
+        PyFile_FromFile = pythonapi.PyFile_FromFile
+        PyFile_FromFile.restype = py_object
+        PyFile_FromFile.argtypes = [FILE_p,
+                                    c_char_p,
+                                    c_char_p,
+                                    PyFile_FromFile_close_cb]
+        return PyFile_FromFile(c_file, "", "r+", PyFile_FromFile_close_cb())
+
+    else:
+        fileno = libc.fileno
+        fileno.restype = c_int
+        fileno.argtypes = [c_void_p]
+
+        return os.fdopen(fileno(c_file), r'r+b')
+
+def coerce_py_file(obj):
+    if not sys.version_info > (3,):
+        PyFile_AsFile = pythonapi.PyFile_AsFile
+        PyFile_AsFile.restype = FILE_p
+        PyFile_AsFile.argtypes = [py_object]
+
+        if isinstance(obj, FILE_p):
+            return obj
+        else:
+            return PyFile_AsFile(obj)
+
+    # Python 3 does not provide a low level buffered I/O (FILE*) API. Had to
+    # resort to direct Standard C library calls.
+    #
+    #   https://docs.python.org/3/c-api/file.html.
+    #
+    else:
+        fdopen = libc.fdopen
+        fdopen.restype = FILE_p
+        fdopen.argtypes = [c_int, c_char_p]
+
+        setbuf = libc.setbuf
+        setbuf.restype = None
+        setbuf.argtypes = [FILE_p, c_char_p]
+
+        if isinstance(obj, FILE_p):
+            return obj
+        else:
+            fd = obj.fileno()
+            fp = fdopen(fd, obj.mode.encode())
+
+            # Make sure the file is opened in unbuffered mode. The test case
+            # "test_zmsg" of the CZMQ Python fails if this mode is not set.
+            setbuf(fp, None)
+
+            return fp
+
 
 # il_log
 lib.il_log_new.restype = il_log_p
@@ -59,6 +118,10 @@ lib.il_log_set_print_level.restype = None
 lib.il_log_set_print_level.argtypes = [il_log_p, c_int]
 lib.il_log_output_line.restype = None
 lib.il_log_output_line.argtypes = [il_log_p]
+lib.il_log_add_file.restype = None
+lib.il_log_add_file.argtypes = [il_log_p, FILE_p]
+lib.il_log_remove_file.restype = None
+lib.il_log_remove_file.argtypes = [il_log_p, FILE_p]
 lib.il_log_test.restype = None
 lib.il_log_test.argtypes = [c_bool]
 
@@ -151,13 +214,25 @@ print level will not get printed.
 
     def output_line(self):
         """
-        If the time specified by the output interval has passed since the last
-time this method has printed a line, the accumulated data will be
-formatted and printed. Every 10th line, a newline and a header will be
-printed. The accumulated data of all entries will be reset.  If not
-enough time has passed, nothing happens.
+        If the time specified by the output interval has passed since the last time this method has
+printed a line, the accumulated data will be formatted and printed. Every 10th line, a
+newline and a header will be printed. The accumulated data of all entries will be reset. If
+not enough time has passed, nothing happens. The output will be printed to all files
+registerd with `il_log_add_file`.
         """
         return lib.il_log_output_line(self._as_parameter_)
+
+    def add_file(self, fid):
+        """
+        Add another file descriptor to the list of output streams.
+        """
+        return lib.il_log_add_file(self._as_parameter_, coerce_py_file(fid))
+
+    def remove_file(self, fid):
+        """
+        Remove file descriptor from the list of output streams.
+        """
+        return lib.il_log_remove_file(self._as_parameter_, coerce_py_file(fid))
 
     @staticmethod
     def test(verbose):

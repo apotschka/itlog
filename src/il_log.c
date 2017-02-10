@@ -29,7 +29,7 @@ struct _il_log_t {
     int64_t last_time;  //  Time of last line printing [ms].
     int64_t output_interval;  //  Interval between line outputs [ms].
     int print_level;
-    FILE *file;  //  Output file (default: stdout).
+    il_fid_list_t *files;  //  Output files (default: stdout).
 };
 
 
@@ -48,7 +48,9 @@ il_log_new (void)
     self->n_lines_printed = 0;
     self->last_time = 0;
     self->output_interval = 0;
-    self->file = stdout;
+    self->files = il_fid_list_new ();
+    assert (self->files);
+    il_fid_list_add (self->files, stdout);
     return self;
 }
 
@@ -63,6 +65,7 @@ il_log_destroy (il_log_t **self_p)
     if (*self_p) {
         il_log_t *self = *self_p;
         //  Free class properties here
+        il_fid_list_destroy (&self->files);
         zhash_destroy (&self->columns);
         zlist_destroy (&self->column_list);
         zlist_destroy (&self->header_list);
@@ -182,15 +185,15 @@ il_log_output_line (il_log_t *self)
         while (header_name && col) {
             if (col->print_level <= self->print_level) {
                 if (!printed_something)
-                    fprintf (self->file, "\n");
-                fprintf (self->file, col->header_format, header_name);
+                    il_fid_list_printf (self->files, "\n");
+                il_fid_list_printf (self->files, col->header_format, header_name);
                 printed_something = true;
             }
             header_name = (char *) zlist_next (self->header_list);
             col = (il_column_t *) zlist_next (self->column_list);
         }
         if (printed_something)
-            fprintf (self->file, "\n");
+            il_fid_list_printf (self->files, "\n");
         assert (header_name == NULL && col == NULL);
     }
     //  Print and reset accumulated data
@@ -204,21 +207,44 @@ il_log_output_line (il_log_t *self)
                 data /= col->modifier;
             if (col->mode & IL_LOG_UNIT_INTERVAL) {
                 if (data <= 0.5)
-                    fprintf (self->file, "   ");
+                    il_fid_list_printf (self->files, "   ");
                 else {
-                    fprintf (self->file, " 1-");
+                    il_fid_list_printf (self->files, " 1-");
                     data = 1.0 - data;
                 }
             }
-            fprintf (self->file, col->entry_format, data);
+            il_fid_list_printf (self->files, col->entry_format, data);
         }
         col->data = 0.0;
         col->modifier = 0.0;
         col = (il_column_t *) zlist_next (self->column_list);
     }
     if (printed_something)
-        fprintf (self->file, "\n");
+        il_fid_list_printf (self->files, "\n");
 }
+
+
+//  --------------------------------------------------------------------------
+//  Add another file descriptor to the list of output streams.
+
+void
+il_log_add_file (il_log_t *self, FILE *fid)
+{
+    assert (self && self->files);
+    il_fid_list_add (self->files, fid);
+}
+
+
+//  --------------------------------------------------------------------------
+//  Remove file descriptor from the list of output streams.
+
+void
+il_log_remove_file (il_log_t *self, FILE *fid)
+{
+    assert (self && self->files);
+    il_fid_list_remove (self->files, fid);
+}
+
 
 //  --------------------------------------------------------------------------
 //  Self test of this class
@@ -233,6 +259,10 @@ il_log_test (bool verbose)
     il_log_t *self = il_log_new ();
     assert (self);
     il_log_set_print_level (self, 3);
+
+    FILE *out_file = fopen ("il_selftest.txt", "w");
+    assert ("Could not open file" && out_file);
+    il_log_add_file (self, out_file);
 
     const double data_max = 30.0;
     double data;
@@ -256,6 +286,10 @@ il_log_test (bool verbose)
         //  Change print level
         il_log_set_print_level (self, 2);
     }
+
+    il_log_remove_file (self, out_file);  //  not necessary, just testing here
+    fclose (out_file);
+
     il_log_destroy (&self);
     assert (self == NULL);
     //  @end
