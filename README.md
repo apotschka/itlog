@@ -46,9 +46,9 @@ The following code is the self test of the `il_log` class.
         assert (self);
         il_log_set_print_level (self, 3);
     
-        FILE *out_file = fopen ("il_selftest.txt", "w");
-        assert ("Could not open file" && out_file);
-        il_log_add_file (self, out_file);
+        //  Reroute output to stderr
+        il_log_add_file (self, stderr);
+        il_log_remove_file (self, stdout);
     
         const double data_max = 30.0;
         double data;
@@ -72,10 +72,6 @@ The following code is the self test of the `il_log` class.
             //  Change print level
             il_log_set_print_level (self, 2);
         }
-    
-        il_log_remove_file (self, out_file);  //  not necessary, just testing here
-        fclose (out_file);
-    
         il_log_destroy (&self);
         assert (self == NULL);
 ```
@@ -138,6 +134,10 @@ It produces the following output in the file `il_selftest.txt`:
           23.5        23        24        47 1-1.7e-01
           25.5        25        26        51 1-1.0e-01
           27.5        27        28        55 1-3.4e-02
+    
+    Test 2: To stdout and stderr
+    
+    Test 3: Only to stderr
 ```
 
 _This documentation was generated from itlog/README.txt using [Gitdown](https://github.com/zeromq/gitdown)_

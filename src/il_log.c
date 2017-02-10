@@ -260,9 +260,9 @@ il_log_test (bool verbose)
     assert (self);
     il_log_set_print_level (self, 3);
 
-    FILE *out_file = fopen ("il_selftest.txt", "w");
-    assert ("Could not open file" && out_file);
-    il_log_add_file (self, out_file);
+    //  Reroute output to stderr
+    il_log_add_file (self, stderr);
+    il_log_remove_file (self, stdout);
 
     const double data_max = 30.0;
     double data;
@@ -286,10 +286,6 @@ il_log_test (bool verbose)
         //  Change print level
         il_log_set_print_level (self, 2);
     }
-
-    il_log_remove_file (self, out_file);  //  not necessary, just testing here
-    fclose (out_file);
-
     il_log_destroy (&self);
     assert (self == NULL);
     //  @end

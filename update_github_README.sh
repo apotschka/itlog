@@ -1,3 +1,3 @@
 #!/bin/bash
-cd src && ./il_selftest && cd ..
+src/il_selftest 2> il_selftest.txt
 gitdown README.txt
