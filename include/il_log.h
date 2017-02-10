@@ -42,7 +42,7 @@ IL_EXPORT void
 //  *** Draft method, for development use, may change without warning ***
 //  Set the output interval in microseconds.
 IL_EXPORT void
-    il_log_set_output_interval (il_log_t *self, int64_t interval);
+    il_log_set_output_interval (il_log_t *self, int msecs);
 
 //  *** Draft method, for development use, may change without warning ***
 //  Add or update an entry of the logger provided that the print level                  

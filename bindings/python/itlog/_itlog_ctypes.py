@@ -45,10 +45,6 @@ class il_log_t(Structure):
     pass # Empty - only for type checking
 il_log_p = POINTER(il_log_t)
 
-class msecs_t(Structure):
-    pass # Empty - only for type checking
-msecs_p = POINTER(msecs_t)
-
 
 # il_log
 lib.il_log_new.restype = il_log_p
@@ -56,7 +52,7 @@ lib.il_log_new.argtypes = []
 lib.il_log_destroy.restype = None
 lib.il_log_destroy.argtypes = [POINTER(il_log_p)]
 lib.il_log_set_output_interval.restype = None
-lib.il_log_set_output_interval.argtypes = [il_log_p, msecs_p]
+lib.il_log_set_output_interval.argtypes = [il_log_p, c_int]
 lib.il_log_entry.restype = c_bool
 lib.il_log_entry.argtypes = [il_log_p, c_int, c_char_p, c_char_p, c_char_p, c_double, c_int]
 lib.il_log_set_print_level.restype = None
@@ -120,11 +116,11 @@ class IlLog(object):
         "Determine whether the object is valid by converting to boolean" # Python 2
         return self._as_parameter_.__nonzero__()
 
-    def set_output_interval(self, interval):
+    def set_output_interval(self, msecs):
         """
         Set the output interval in microseconds.
         """
-        return lib.il_log_set_output_interval(self._as_parameter_, interval)
+        return lib.il_log_set_output_interval(self._as_parameter_, msecs)
 
     def entry(self, print_level, header_format, header_name, entry_format, value, mode):
         """

@@ -77,10 +77,10 @@ il_log_destroy (il_log_t **self_p)
 //  Set output interval.
 
 void
-il_log_set_output_interval (il_log_t *self, int64_t interval)
+il_log_set_output_interval (il_log_t *self, int msecs)
 {
     assert (self);
-    self->output_interval = interval;
+    self->output_interval = msecs;
 }
 
 

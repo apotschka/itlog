@@ -18,7 +18,7 @@
 
     <method name = "set output interval">
         Set the output interval in microseconds.
-        <argument name = "interval" type = "msecs" />
+        <argument name = "msecs" type = "integer" />
     </method>
 
     <method name = "entry">
