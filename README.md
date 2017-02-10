@@ -54,7 +54,7 @@ The following code is the self test of the `il_log` class.
         double data;
         int run;
         for (run = 0; run < 2; run++) {
-            fprintf(stdout, "\nRun %s output interval.\n", run == 0? "without": "with");
+            fprintf (stdout, "\nRun %s output interval.\n", run == 0? "without": "with");
             //  Loop with synthetic data
             for (data = 0.0; data < data_max; data += 1.0) {
                 zclock_sleep (3);

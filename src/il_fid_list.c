@@ -99,10 +99,10 @@ il_fid_list_printf (il_fid_list_t *self, const char *format, ...)
     output [sizeof (output) - 1] = 0;
 
     // print strings to FILE descriptors
-    FILE *fid = zlist_first (self->fids);
+    FILE *fid = (FILE *) zlist_first (self->fids);
     while (fid) {
         fputs (output, fid);
-        fid = zlist_next (self->fids);
+        fid = (FILE *) zlist_next (self->fids);
     }
 }
 
