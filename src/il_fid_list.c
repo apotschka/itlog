@@ -136,7 +136,7 @@ il_fid_list_test (bool verbose)
 
     //  Check files
     char expected1[100] = "Test 1: Only to fid1\n" "Test 2: To fid1 and fid2\n";
-    fid1 = freopen (NULL, "r", fid1);
+    rewind (fid1);
     int len = strnlen(expected1, 100);
     int letter = 0;
     while (!feof (fid1) && letter < len && fgetc (fid1) == expected1 [letter])
@@ -145,7 +145,7 @@ il_fid_list_test (bool verbose)
     fclose (fid1);
 
     char expected2[100] = "Test 2: To fid1 and fid2\n" "Test 3: Only to fid2\n";
-    fid2 = freopen (NULL, "r", fid2);
+    rewind (fid2);
     len = strnlen(expected2, 100);
     letter = 0;
     while (!feof (fid2) && letter < len && fgetc (fid2) == expected2 [letter])

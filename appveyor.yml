@@ -83,7 +83,7 @@ after_build:
   - cmd: 7z a -y -bd -mx=9 itlog.zip il_selftest.exe itlog.dll czmq.dll libsodium.dll libzmq-*.dll
   - ps: Push-AppveyorArtifact "itlog.zip" -Filename "itlog-${env:Platform}-${env:Configuration}.zip"
   - cmd: cd "%ITLOG_BUILDDIR%"
-  - cmd: ctest -C "%Configuration%" -V
+  - cmd: ctest -C "%Configuration%"
 
 test:
   none
