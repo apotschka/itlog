@@ -135,18 +135,18 @@ il_fid_list_test (bool verbose)
     il_fid_list_destroy (&self);
 
     //  Check files
-    char expected1[100] = "Test 1: Only to fid1\n" "Test 2: To fid1 and fid2\n";
+    char expected1 [100] = "Test 1: Only to fid1\n" "Test 2: To fid1 and fid2\n";
     rewind (fid1);
-    int len = strnlen(expected1, 100);
+    int len = strnlen (expected1, 100);
     int letter = 0;
     while (!feof (fid1) && letter < len && fgetc (fid1) == expected1 [letter])
         letter++;
     assert (letter == len);
     fclose (fid1);
 
-    char expected2[100] = "Test 2: To fid1 and fid2\n" "Test 3: Only to fid2\n";
+    char expected2 [100] = "Test 2: To fid1 and fid2\n" "Test 3: Only to fid2\n";
     rewind (fid2);
-    len = strnlen(expected2, 100);
+    len = strnlen (expected2, 100);
     letter = 0;
     while (!feof (fid2) && letter < len && fgetc (fid2) == expected2 [letter])
         letter++;
