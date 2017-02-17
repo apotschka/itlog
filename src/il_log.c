@@ -260,15 +260,20 @@ il_log_test (bool verbose)
     assert (self);
     il_log_set_print_level (self, 3);
 
-    //  Reroute output to stderr
-    il_log_add_file (self, stderr);
+    //  Reroute output to a temporary file and, if verbose, add stderr
+    FILE *tmp_file = tmpfile ();
+    assert (tmp_file);
+    il_log_add_file (self, tmp_file);
     il_log_remove_file (self, stdout);
+    if (verbose)
+        il_log_add_file (self, stderr);
 
     const double data_max = 30.0;
     double data;
     int run;
     for (run = 0; run < 2; run++) {
-        fprintf (stdout, "\nRun %s output interval.\n", run == 0? "without": "with");
+        if (verbose)
+            fprintf (stderr, "\nRun %s output interval.\n", run == 0? "without": "with");
         //  Loop with synthetic data
         for (data = 0.0; data < data_max; data += 1.0) {
             zclock_sleep (3);
@@ -288,6 +293,7 @@ il_log_test (bool verbose)
     }
     il_log_destroy (&self);
     assert (self == NULL);
+    fclose (tmp_file);
     //  @end
     printf ("OK\n");
 }

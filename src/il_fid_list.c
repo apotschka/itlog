@@ -122,15 +122,36 @@ il_fid_list_test (bool verbose)
     il_fid_list_destroy (&self);
 
     //  Add, print, remove, print test
+    FILE *fid1 = tmpfile (), *fid2 = tmpfile ();
+    assert (fid1 && fid2);
     int ntest = 1;
     self = il_fid_list_new ();
-    il_fid_list_add (self, stdout);
-    il_fid_list_printf (self, "\nTest %d: Only to %s\n", ntest++, "stdout");
-    il_fid_list_add (self, stderr);
-    il_fid_list_printf (self, "\nTest %d: To %s and %s\n", ntest++, "stdout", "stderr");
-    il_fid_list_remove (self, stdout);
-    il_fid_list_printf (self, "\nTest %d: Only to %s\n", ntest++, "stderr");
+    il_fid_list_add (self, fid1);
+    il_fid_list_printf (self, "Test %d: Only to %s\n", ntest++, "fid1");
+    il_fid_list_add (self, fid2);
+    il_fid_list_printf (self, "Test %d: To %s and %s\n", ntest++, "fid1", "fid2");
+    il_fid_list_remove (self, fid1);
+    il_fid_list_printf (self, "Test %d: Only to %s\n", ntest++, "fid2");
     il_fid_list_destroy (&self);
+
+    //  Check files
+    char expected1[100] = "Test 1: Only to fid1\n" "Test 2: To fid1 and fid2\n";
+    fid1 = freopen (NULL, "r", fid1);
+    int len = strnlen(expected1, 100);
+    int letter = 0;
+    while (!feof (fid1) && letter < len && fgetc (fid1) == expected1 [letter])
+        letter++;
+    assert (letter == len);
+    fclose (fid1);
+
+    char expected2[100] = "Test 2: To fid1 and fid2\n" "Test 3: Only to fid2\n";
+    fid2 = freopen (NULL, "r", fid2);
+    len = strnlen(expected2, 100);
+    letter = 0;
+    while (!feof (fid2) && letter < len && fgetc (fid2) == expected2 [letter])
+        letter++;
+    assert (letter == len);
+    fclose (fid2);
     //  @end
     printf ("OK\n");
 }

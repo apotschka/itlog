@@ -46,15 +46,20 @@ The following code is the self test of the `il_log` class.
         assert (self);
         il_log_set_print_level (self, 3);
     
-        //  Reroute output to stderr
-        il_log_add_file (self, stderr);
+        //  Reroute output to a temporary file and, if verbose, add stderr
+        FILE *tmp_file = tmpfile ();
+        assert (tmp_file);
+        il_log_add_file (self, tmp_file);
         il_log_remove_file (self, stdout);
+        if (verbose)
+            il_log_add_file (self, stderr);
     
         const double data_max = 30.0;
         double data;
         int run;
         for (run = 0; run < 2; run++) {
-            fprintf (stdout, "\nRun %s output interval.\n", run == 0? "without": "with");
+            if (verbose)
+                fprintf (stderr, "\nRun %s output interval.\n", run == 0? "without": "with");
             //  Loop with synthetic data
             for (data = 0.0; data < data_max; data += 1.0) {
                 zclock_sleep (3);
@@ -74,11 +79,14 @@ The following code is the self test of the `il_log` class.
         }
         il_log_destroy (&self);
         assert (self == NULL);
+        fclose (tmp_file);
 ```
 
-It produces the following output in the file `il_selftest.txt`:
+If `verbose` is `true`, it produces the following output:
 
 ```txt
+    
+    Run without output interval.
     
           last   average   minimum   maximum       sum    [0, 1]
              0       0.0         0         0         0   0.0e+00
@@ -116,6 +124,8 @@ It produces the following output in the file `il_selftest.txt`:
             28      28.0        28        28        28 1-3.4e-02
             29      29.0        29        29        29 1-0.0e+00
     
+    Run with output interval.
+    
        average   minimum   maximum       sum    [0, 1]
            0.0         0         0         0   0.0e+00
            1.5         1         2         3   6.9e-02
@@ -134,10 +144,6 @@ It produces the following output in the file `il_selftest.txt`:
           23.5        23        24        47 1-1.7e-01
           25.5        25        26        51 1-1.0e-01
           27.5        27        28        55 1-3.4e-02
-    
-    Test 2: To stdout and stderr
-    
-    Test 3: Only to stderr
 ```
 
 _This documentation was generated from itlog/README.txt using [Gitdown](https://github.com/zeromq/gitdown)_
