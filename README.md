@@ -3,9 +3,34 @@
 libitlog
 ========
 
+| Linux & MacOSX | Windows  |
+|----------------|----------|
+|[![Build Status](https://travis-ci.org/apotschka/itlog.svg?branch=master)](https://travis-ci.org/apotschka/itlog)|[![Build status](https://ci.appveyor.com/api/projects/status/vjdir00phjdg3ly0?svg=true)](https://ci.appveyor.com/project/apotschka/itlog)|
+
 A portable logger for monitoring iterative numerical algorithms.
 
-<A name="toc2-9" title="Purpose"></A>
+<A name="toc2-13" title="Contents"></A>
+Contents
+--------
+
+
+**<a href="#toc2-19">Purpose</a>**
+
+**<a href="#toc2-28">License</a>**
+
+**<a href="#toc2-36">Contribution policy</a>**
+
+**<a href="#toc2-44">Style guide</a>**
+
+**<a href="#toc2-54">API reference</a>**
+
+**<a href="#toc2-146">Example</a>**
+
+**<a href="#toc2-258">Python bindings</a>**
+
+**<a href="#toc2-264">History</a>**
+
+<A name="toc2-19" title="Purpose"></A>
 Purpose
 -------
 
@@ -14,7 +39,7 @@ algorithm in a tabular manner by supporting and encouraging you to monitor
 important quantities of your computation. It is written in C with a
 focus on portability.
 
-<A name="toc2-18" title="License"></A>
+<A name="toc2-28" title="License"></A>
 License
 -------
 
@@ -22,19 +47,25 @@ This Source Code Form is subject to the terms of the Mozilla Public License, v.
 2.0. If a copy of the MPL was not distributed with this file, you can obtain one
 at <http://mozilla.org/MPL/2.0/>.
 
-<A name="toc2-26" title="Contribution policy"></A>
+<A name="toc2-36" title="Contribution policy"></A>
 Contribution policy
 -------------------
 
-Please fork your own repository and supply updates via pull requests.
+Please fork your own repository and supply updates via pull requests. This
+project follows the [Collective Code Construction Contract
+C4.1](https://rfc.zeromq.org/spec:42/C4).
 
-<A name="toc2-32" title="Style guide"></A>
+<A name="toc2-44" title="Style guide"></A>
 Style guide
 -----------
 
-Read the book [Scalable C](https://www.gitbook.com/book/hintjens/scalable-c/details).
+This project follows the [C Language Style for Scalability
+(CLASS)](https://rfc.zeromq.org/spec:21/CLASS/) and the
+[ZeroMQ Coding Style Guidelines](http://zeromq.org/docs:style). The unfinished
+book [Scalable C](https://www.gitbook.com/book/hintjens/scalable-c/details) by
+Pieter Hintjens is a good start for the overall software engineering approach.
 
-<A name="toc2-38" title="API reference"></A>
+<A name="toc2-54" title="API reference"></A>
 API reference
 -------------
 
@@ -126,7 +157,7 @@ following interface:
     #endif // IL_BUILD_DRAFT_API
 ```
 
-<A name="toc2-130" title="Example"></A>
+<A name="toc2-146" title="Example"></A>
 Example
 -------
 
@@ -238,13 +269,13 @@ If `verbose` is `true`, it produces the following output on `stderr`:
           27.5        27        28        55 1-3.4e-02
 ```
 
-<A name="toc2-242" title="Python bindings"></A>
+<A name="toc2-258" title="Python bindings"></A>
 Python bindings
 ---------------
 
 TODO
 
-<A name="toc2-248" title="History"></A>
+<A name="toc2-264" title="History"></A>
 History
 -------
 

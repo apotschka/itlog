@@ -3,7 +3,16 @@
 libitlog
 ========
 
+| Linux & MacOSX | Windows  |
+|----------------|----------|
+|[![Build Status](https://travis-ci.org/apotschka/itlog.svg?branch=master)](https://travis-ci.org/apotschka/itlog)|[![Build status](https://ci.appveyor.com/api/projects/status/vjdir00phjdg3ly0?svg=true)](https://ci.appveyor.com/project/apotschka/itlog)|
+
 A portable logger for monitoring iterative numerical algorithms.
+
+Contents
+--------
+
+.toc 3
 
 Purpose
 -------
@@ -23,12 +32,18 @@ at <http://mozilla.org/MPL/2.0/>.
 Contribution policy
 -------------------
 
-Please fork your own repository and supply updates via pull requests.
+Please fork your own repository and supply updates via pull requests. This
+project follows the [Collective Code Construction Contract
+C4.1](https://rfc.zeromq.org/spec:42/C4).
 
 Style guide
 -----------
 
-Read the book [Scalable C](https://www.gitbook.com/book/hintjens/scalable-c/details).
+This project follows the [C Language Style for Scalability
+(CLASS)](https://rfc.zeromq.org/spec:21/CLASS/) and the
+[ZeroMQ Coding Style Guidelines](http://zeromq.org/docs:style). The unfinished
+book [Scalable C](https://www.gitbook.com/book/hintjens/scalable-c/details) by
+Pieter Hintjens is a good start for the overall software engineering approach.
 
 API reference
 -------------

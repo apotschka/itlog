@@ -111,7 +111,8 @@ il_log_entry (il_log_t *self, int print_level, const char *header_format, const 
         const char *entry_format, double value, int mode)
 {
     assert (self);
-    if (print_level > self->print_level) return false;
+    if (print_level > self->print_level)
+        return false;
 
     bool new_column = false;
     il_column_t *col = (il_column_t *) zhash_lookup (self->columns, header_name);
