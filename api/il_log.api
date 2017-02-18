@@ -17,16 +17,21 @@
     </destructor>
 
     <method name = "set output interval">
-        Set the output interval in microseconds.
+        Set the output interval in microseconds. The default is 0.
         <argument name = "msecs" type = "integer" />
     </method>
 
+    <method name = "set header frequency">
+        Set the frequency of header lines. The default is 10.
+        <argument name = "freq" type = "integer" />
+    </method>
+
     <method name = "entry">
-        Add or update an entry of the logger provided that the print level
-        argument does not exceed the print level of the logger. If entries of
-        the same header name have been used before, the method accumulates the
-        data and returns false. If no entry exists yet, the method creates it
-        and returns true. Possible modes for accumulation of data are
+        Add or update an entry of the logger provided that the print level argument does
+        not exceed the print level of the logger. If entries of the same header name
+        have been used before, the method accumulates the data and returns false. If no
+        entry exists yet, the method creates it and returns true. Possible modes for
+        accumulation of data are
 
         * IL_LOG_USE_LAST: Entry supplied last
         * IL_LOG_USE_AVERAGE: Average of entries since last printing.
@@ -34,9 +39,9 @@
         * IL_LOG_USE_MAX: Maximum of entries since last printing.
         * IL_LOG_USE_SUM: Sum of entries since last printing.
 
-        An additional flag IL_LOG_UNIT_INTERVAL can be set using "|" for special printing of
-        values between 0 and 1. In this case, the entry format should be shorter
-        than the header format by three characters.
+        An additional flag IL_LOG_UNIT_INTERVAL can be set using "|" for special
+        printing of values between 0 and 1. In this case, the entry format should be
+        shorter than the header format by three characters.
 
         <argument name = "print_level" type = "integer" />
         <argument name = "header format" type = "string" />
@@ -48,17 +53,19 @@
     </method>
 
     <method name = "set print level">
-        Set the print level of the logger. All columns exceeding the current
-        print level will not get printed.
+        Set the print level of the logger. All columns exceeding the current print level
+        will not get printed.
         <argument name = "print level" type = "integer" />
     </method>
 
     <method name = "output line">
-        If the time specified by the output interval has passed since the last time this method has
-        printed a line, the accumulated data will be formatted and printed. Every 10th line, a
-        newline and a header will be printed. The accumulated data of all entries will be reset. If
-        not enough time has passed, nothing happens. The output will be printed to all files
-        registerd with `il_log_add_file`.
+        If the time specified by the output interval has passed since the last time this
+        method has printed a line, the accumulated data will be formatted and printed.
+        Every 10th line, a newline and a header will be printed (the number can be
+        changed by setting the header frequency). The accumulated data of all entries
+        will be reset. If not enough time has passed, nothing happens. The output will
+        be printed to all files registerd with `il_log_add_file`. Standard output is
+        registered by default.
     </method>
 
     <method name = "add file">

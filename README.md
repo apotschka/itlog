@@ -34,7 +34,99 @@ Style guide
 
 Read the book [Scalable C](https://www.gitbook.com/book/hintjens/scalable-c/details).
 
-<A name="toc2-38" title="Example"></A>
+<A name="toc2-38" title="API reference"></A>
+API reference
+-------------
+
+The main functionality of libitlog is in its `il_log` class, which becomes
+accessible by including `#include "itlog.h"`. The `il_log` class has the
+following interface:
+
+```h
+    //  This API is a draft, and may change without notice.
+    #ifdef IL_BUILD_DRAFT_API
+    #define IL_LOG_USE_LAST 1                   // Log entry supplied last.
+    #define IL_LOG_USE_AVERAGE 2                // Log average of entries since last log line.
+    #define IL_LOG_USE_MIN 3                    // Log minimum of entries since last log line.
+    #define IL_LOG_USE_MAX 4                    // Log maximum of entries since last log line.
+    #define IL_LOG_USE_SUM 5                    // Log sum of entries since last log line.
+    #define IL_LOG_UNIT_INTERVAL 0x100          // Flag for special printing of values in [0,1].
+    
+    //  *** Draft method, for development use, may change without warning ***
+    //  Constructor.
+    IL_EXPORT il_log_t *
+        il_log_new (void);
+    
+    //  *** Draft method, for development use, may change without warning ***
+    //  Destructor.
+    IL_EXPORT void
+        il_log_destroy (il_log_t **self_p);
+    
+    //  *** Draft method, for development use, may change without warning ***
+    //  Set the output interval in microseconds. The default is 0.
+    IL_EXPORT void
+        il_log_set_output_interval (il_log_t *self, int msecs);
+    
+    //  *** Draft method, for development use, may change without warning ***
+    //  Set the frequency of header lines. The default is 10.
+    IL_EXPORT void
+        il_log_set_header_frequency (il_log_t *self, int freq);
+    
+    //  *** Draft method, for development use, may change without warning ***
+    //  Add or update an entry of the logger provided that the print level argument does
+    //  not exceed the print level of the logger. If entries of the same header name    
+    //  have been used before, the method accumulates the data and returns false. If no 
+    //  entry exists yet, the method creates it and returns true. Possible modes for    
+    //  accumulation of data are                                                        
+    //                                                                                  
+    //  * IL_LOG_USE_LAST: Entry supplied last                                          
+    //  * IL_LOG_USE_AVERAGE: Average of entries since last printing.                   
+    //  * IL_LOG_USE_MIN: Minimum of entries since last printing.                       
+    //  * IL_LOG_USE_MAX: Maximum of entries since last printing.                       
+    //  * IL_LOG_USE_SUM: Sum of entries since last printing.                           
+    //                                                                                  
+    //  An additional flag IL_LOG_UNIT_INTERVAL can be set using "|" for special        
+    //  printing of values between 0 and 1. In this case, the entry format should be    
+    //  shorter than the header format by three characters.                             
+    IL_EXPORT bool
+        il_log_entry (il_log_t *self, int print_level, const char *header_format, const char *header_name, const char *entry_format, double value, int mode);
+    
+    //  *** Draft method, for development use, may change without warning ***
+    //  Set the print level of the logger. All columns exceeding the current print level
+    //  will not get printed.                                                           
+    IL_EXPORT void
+        il_log_set_print_level (il_log_t *self, int print_level);
+    
+    //  *** Draft method, for development use, may change without warning ***
+    //  If the time specified by the output interval has passed since the last time this
+    //  method has printed a line, the accumulated data will be formatted and printed.  
+    //  Every 10th line, a newline and a header will be printed (the number can be      
+    //  changed by setting the header frequency). The accumulated data of all entries   
+    //  will be reset. If not enough time has passed, nothing happens. The output will  
+    //  be printed to all files registerd with `il_log_add_file`. Standard output is    
+    //  registered by default.                                                          
+    IL_EXPORT void
+        il_log_output_line (il_log_t *self);
+    
+    //  *** Draft method, for development use, may change without warning ***
+    //  Add another file descriptor to the list of output streams.
+    IL_EXPORT void
+        il_log_add_file (il_log_t *self, FILE *fid);
+    
+    //  *** Draft method, for development use, may change without warning ***
+    //  Remove file descriptor from the list of output streams.
+    IL_EXPORT void
+        il_log_remove_file (il_log_t *self, FILE *fid);
+    
+    //  *** Draft method, for development use, may change without warning ***
+    //  Usage example and self test.
+    IL_EXPORT void
+        il_log_test (bool verbose);
+    
+    #endif // IL_BUILD_DRAFT_API
+```
+
+<A name="toc2-130" title="Example"></A>
 Example
 -------
 
@@ -145,5 +237,12 @@ If `verbose` is `true`, it produces the following output:
           25.5        25        26        51 1-1.0e-01
           27.5        27        28        55 1-3.4e-02
 ```
+
+<A name="toc2-242" title="Python bindings"></A>
+Python bindings
+---------------
+
+TODO
+
 
 _This documentation was generated from itlog/README.txt using [Gitdown](https://github.com/zeromq/gitdown)_

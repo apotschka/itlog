@@ -30,6 +30,15 @@ Style guide
 
 Read the book [Scalable C](https://www.gitbook.com/book/hintjens/scalable-c/details).
 
+API reference
+-------------
+
+The main functionality of libitlog is in its `il_log` class, which becomes
+accessible by including `#include "itlog.h"`. The `il_log` class has the
+following interface:
+
+.pull include/il_log.h@interface,code
+
 Example
 -------
 
@@ -40,3 +49,9 @@ The following code is the self test of the `il_log` class.
 If `verbose` is `true`, it produces the following output:
 
 .pull il_selftest.txt,code
+
+Python bindings
+---------------
+
+TODO
+

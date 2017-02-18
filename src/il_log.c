@@ -28,7 +28,8 @@ struct _il_log_t {
     uint64_t n_lines_printed;  //  Number of lines printed.
     int64_t last_time;  //  Time of last line printing [ms].
     int64_t output_interval;  //  Interval between line outputs [ms].
-    int print_level;
+    int print_level;  // Print level.
+    int header_freq;  // Print header and newline every header_freq-th printing.
     il_fid_list_t *files;  //  Output files (default: stdout).
 };
 
@@ -48,6 +49,8 @@ il_log_new (void)
     self->n_lines_printed = 0;
     self->last_time = 0;
     self->output_interval = 0;
+    self->print_level = 0;
+    self->header_freq = 10;
     self->files = il_fid_list_new ();
     assert (self->files);
     il_fid_list_add (self->files, stdout);
@@ -84,6 +87,16 @@ il_log_set_output_interval (il_log_t *self, int msecs)
 {
     assert (self);
     self->output_interval = msecs;
+}
+
+
+//  --------------------------------------------------------------------------
+//  Set the frequency of header lines. The default is 10.
+void
+il_log_set_header_frequency (il_log_t *self, int freq)
+{
+    assert (self);
+    self->header_freq = freq;
 }
 
 
@@ -177,7 +190,7 @@ il_log_output_line (il_log_t *self)
 
     bool printed_something = false;
     il_column_t *col;
-    if (self->n_lines_printed++ % 10 == 0) {
+    if (self->n_lines_printed++ % self->header_freq == 0) {
         //  Print header
         char *header_name;
         header_name = (char *) zlist_first (self->header_list);

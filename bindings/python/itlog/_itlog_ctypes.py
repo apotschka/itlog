@@ -112,6 +112,8 @@ lib.il_log_destroy.restype = None
 lib.il_log_destroy.argtypes = [POINTER(il_log_p)]
 lib.il_log_set_output_interval.restype = None
 lib.il_log_set_output_interval.argtypes = [il_log_p, c_int]
+lib.il_log_set_header_frequency.restype = None
+lib.il_log_set_header_frequency.argtypes = [il_log_p, c_int]
 lib.il_log_entry.restype = c_bool
 lib.il_log_entry.argtypes = [il_log_p, c_int, c_char_p, c_char_p, c_char_p, c_double, c_int]
 lib.il_log_set_print_level.restype = None
@@ -181,17 +183,23 @@ class IlLog(object):
 
     def set_output_interval(self, msecs):
         """
-        Set the output interval in microseconds.
+        Set the output interval in microseconds. The default is 0.
         """
         return lib.il_log_set_output_interval(self._as_parameter_, msecs)
 
+    def set_header_frequency(self, freq):
+        """
+        Set the frequency of header lines. The default is 10.
+        """
+        return lib.il_log_set_header_frequency(self._as_parameter_, freq)
+
     def entry(self, print_level, header_format, header_name, entry_format, value, mode):
         """
-        Add or update an entry of the logger provided that the print level
-argument does not exceed the print level of the logger. If entries of
-the same header name have been used before, the method accumulates the
-data and returns false. If no entry exists yet, the method creates it
-and returns true. Possible modes for accumulation of data are
+        Add or update an entry of the logger provided that the print level argument does
+not exceed the print level of the logger. If entries of the same header name
+have been used before, the method accumulates the data and returns false. If no
+entry exists yet, the method creates it and returns true. Possible modes for
+accumulation of data are
 
 * IL_LOG_USE_LAST: Entry supplied last
 * IL_LOG_USE_AVERAGE: Average of entries since last printing.
@@ -199,26 +207,28 @@ and returns true. Possible modes for accumulation of data are
 * IL_LOG_USE_MAX: Maximum of entries since last printing.
 * IL_LOG_USE_SUM: Sum of entries since last printing.
 
-An additional flag IL_LOG_UNIT_INTERVAL can be set using "|" for special printing of
-values between 0 and 1. In this case, the entry format should be shorter
-than the header format by three characters.
+An additional flag IL_LOG_UNIT_INTERVAL can be set using "|" for special
+printing of values between 0 and 1. In this case, the entry format should be
+shorter than the header format by three characters.
         """
         return lib.il_log_entry(self._as_parameter_, print_level, header_format, header_name, entry_format, value, mode)
 
     def set_print_level(self, print_level):
         """
-        Set the print level of the logger. All columns exceeding the current
-print level will not get printed.
+        Set the print level of the logger. All columns exceeding the current print level
+will not get printed.
         """
         return lib.il_log_set_print_level(self._as_parameter_, print_level)
 
     def output_line(self):
         """
-        If the time specified by the output interval has passed since the last time this method has
-printed a line, the accumulated data will be formatted and printed. Every 10th line, a
-newline and a header will be printed. The accumulated data of all entries will be reset. If
-not enough time has passed, nothing happens. The output will be printed to all files
-registerd with `il_log_add_file`.
+        If the time specified by the output interval has passed since the last time this
+method has printed a line, the accumulated data will be formatted and printed.
+Every 10th line, a newline and a header will be printed (the number can be
+changed by setting the header frequency). The accumulated data of all entries
+will be reset. If not enough time has passed, nothing happens. The output will
+be printed to all files registerd with `il_log_add_file`. Standard output is
+registered by default.
         """
         return lib.il_log_output_line(self._as_parameter_)
 
