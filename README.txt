@@ -46,7 +46,7 @@ The following code is the self test of the `il_log` class.
 
 .pull src/il_log.c@selftest,code
 
-If `verbose` is `true`, it produces the following output:
+If `verbose` is `true`, it produces the following output on `stderr`:
 
 .pull il_selftest.txt,code
 
@@ -54,4 +54,11 @@ Python bindings
 ---------------
 
 TODO
+
+History
+-------
+
+My original motivation to start libitlog was to gather hands-on experience with
+Scalable-C style software engineering. I needed a small project to work on. It
+was the birth of libitlog.
 

@@ -174,7 +174,7 @@ The following code is the self test of the `il_log` class.
         fclose (tmp_file);
 ```
 
-If `verbose` is `true`, it produces the following output:
+If `verbose` is `true`, it produces the following output on `stderr`:
 
 ```txt
     
@@ -243,6 +243,14 @@ Python bindings
 ---------------
 
 TODO
+
+<A name="toc2-248" title="History"></A>
+History
+-------
+
+My original motivation to start libitlog was to gather hands-on experience with
+Scalable-C style software engineering. I needed a small project to work on. It
+was the birth of libitlog.
 
 
 _This documentation was generated from itlog/README.txt using [Gitdown](https://github.com/zeromq/gitdown)_

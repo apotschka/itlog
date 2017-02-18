@@ -14,6 +14,9 @@
 @header
     il_log - Iteration logger class.
 @discuss
+    The il_log class helps you to visualize the iterations of your numerical
+    algorithm in a tabular manner by supporting and encouraging you to monitor
+    important quantities of your computation.
 @end
 */
 
