@@ -137,8 +137,8 @@ il_fid_list_test (bool verbose)
     //  Check files
     char expected1 [100] = "Test 1: Only to fid1\n" "Test 2: To fid1 and fid2\n";
     rewind (fid1);
-    int len = strnlen (expected1, 100);
-    int letter = 0;
+    size_t len = strnlen (expected1, 100);
+    size_t letter = 0;
     while (!feof (fid1) && letter < len && fgetc (fid1) == expected1 [letter])
         letter++;
     assert (letter == len);
