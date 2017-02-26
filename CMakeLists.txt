@@ -181,7 +181,7 @@ install(TARGETS itlog
 ########################################################################
 # pkgconfig
 ########################################################################
-set (VERSION "0.3.0")
+set (VERSION "0.4.0")
 set (prefix "${CMAKE_INSTALL_PREFIX}")
 set (exec_prefix "\${prefix}")
 set (libdir "\${prefix}/lib${LIB_SUFFIX}")
