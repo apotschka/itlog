@@ -25,7 +25,7 @@
 
 //  IL version macros for compile-time API detection
 #define IL_VERSION_MAJOR 0
-#define IL_VERSION_MINOR 1
+#define IL_VERSION_MINOR 2
 #define IL_VERSION_PATCH 0
 
 #define IL_MAKE_VERSION(major, minor, patch) \

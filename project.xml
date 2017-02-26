@@ -9,7 +9,7 @@
     url = "https://github.com/apotschka/itlog"
     repository = "https://github.com/apotschka/itlog"
     >
-    <version major = "0" minor = "1" />
+    <version major = "0" minor = "2" />
     <include filename = "license.xml" />
     <use project = "czmq" />
 

@@ -22,8 +22,8 @@ if [ "$BUILD_TYPE" == "default" ]; then
     cd -
 elif [ "$BUILD_TYPE" == "bindings" ] && [ "$BINDING" == "jni" ]; then
     ( cd bindings/jni && TERM=dumb PKG_CONFIG_PATH=/tmp/lib/pkgconfig ./gradlew clean bintrayUpload )
-    cp bindings/jni/android/itlog-android.jar itlog-android-0.1.0.jar
-    export ITLOG_DEPLOYMENT=itlog-android-0.1.0.jar
+    cp bindings/jni/android/itlog-android.jar itlog-android-0.2.0.jar
+    export ITLOG_DEPLOYMENT=itlog-android-0.2.0.jar
 else
     export ITLOG_DEPLOYMENT=""
 fi
