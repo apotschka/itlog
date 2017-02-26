@@ -4,7 +4,7 @@ libitlog
 ========
 
 | Linux & MacOSX | Windows  |
-|----------------|----------|
+|:--------------:|:--------:|
 |[![Build Status](https://travis-ci.org/apotschka/itlog.svg?branch=master)](https://travis-ci.org/apotschka/itlog)|[![Build status](https://ci.appveyor.com/api/projects/status/vjdir00phjdg3ly0?svg=true)](https://ci.appveyor.com/project/apotschka/itlog)|
 
 A portable logger for monitoring iterative numerical algorithms.
@@ -68,7 +68,11 @@ If `verbose` is `true`, it produces the following output on `stderr`:
 Python bindings
 ---------------
 
-TODO
+This library comes with bindings to Python, automatically generated via
+[zproject](https://github.com/zeromq/zproject). Here is a short example script,
+similar to the example above:
+
+.pull bindings/python/il_selftest.py,code
 
 History
 -------
