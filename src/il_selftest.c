@@ -27,10 +27,8 @@ typedef struct {
 
 static test_item_t
 all_tests [] = {
-#ifdef IL_BUILD_DRAFT_API
-// Tests for draft public classes:
+// Tests for stable public classes:
     { "il_log", il_log_test },
-#endif // IL_BUILD_DRAFT_API
 #ifdef IL_BUILD_DRAFT_API
     { "private_classes", il_private_selftest },
 #endif // IL_BUILD_DRAFT_API
@@ -98,7 +96,7 @@ main (int argc, char **argv)
         if (streq (argv [argn], "--list")
         ||  streq (argv [argn], "-l")) {
             puts ("Available tests:");
-            puts ("    il_log\t\t- draft");
+            puts ("    il_log\t\t- stable");
             puts ("    private_classes\t- draft");
             return 0;
         }

@@ -24,11 +24,11 @@ Contents
 
 **<a href="#toc2-54">API reference</a>**
 
-**<a href="#toc2-146">Example</a>**
+**<a href="#toc2-135">Example</a>**
 
-**<a href="#toc2-258">Python bindings</a>**
+**<a href="#toc2-247">Python bindings</a>**
 
-**<a href="#toc2-317">History</a>**
+**<a href="#toc2-306">History</a>**
 
 <A name="toc2-19" title="Purpose"></A>
 Purpose
@@ -74,8 +74,8 @@ accessible by including `#include "itlog.h"`. The `il_log` class has the
 following interface:
 
 ```h
-    //  This API is a draft, and may change without notice.
-    #ifdef IL_BUILD_DRAFT_API
+    //  This is a stable class, and may not change except for emergencies. It
+    //  is provided in stable builds.
     #define IL_LOG_USE_LAST 1                   // Log entry supplied last.
     #define IL_LOG_USE_AVERAGE 2                // Log average of entries since last log line.
     #define IL_LOG_USE_MIN 3                    // Log minimum of entries since last log line.
@@ -83,27 +83,22 @@ following interface:
     #define IL_LOG_USE_SUM 5                    // Log sum of entries since last log line.
     #define IL_LOG_UNIT_INTERVAL 0x100          // Flag for special printing of values in [0,1].
     
-    //  *** Draft method, for development use, may change without warning ***
     //  Constructor.
     IL_EXPORT il_log_t *
         il_log_new (void);
     
-    //  *** Draft method, for development use, may change without warning ***
     //  Destructor.
     IL_EXPORT void
         il_log_destroy (il_log_t **self_p);
     
-    //  *** Draft method, for development use, may change without warning ***
     //  Set the output interval in microseconds. The default is 0.
     IL_EXPORT void
         il_log_set_output_interval (il_log_t *self, int msecs);
     
-    //  *** Draft method, for development use, may change without warning ***
     //  Set the frequency of header lines. The default is 10.
     IL_EXPORT void
         il_log_set_header_frequency (il_log_t *self, int freq);
     
-    //  *** Draft method, for development use, may change without warning ***
     //  Add or update an entry of the logger provided that the print level argument does
     //  not exceed the print level of the logger. If entries of the same header name    
     //  have been used before, the method accumulates the data and returns false. If no 
@@ -122,13 +117,11 @@ following interface:
     IL_EXPORT bool
         il_log_entry (il_log_t *self, int print_level, const char *header_format, const char *header_name, const char *entry_format, double value, int mode);
     
-    //  *** Draft method, for development use, may change without warning ***
     //  Set the print level of the logger. All columns exceeding the current print level
     //  will not get printed.                                                           
     IL_EXPORT void
         il_log_set_print_level (il_log_t *self, int print_level);
     
-    //  *** Draft method, for development use, may change without warning ***
     //  If the time specified by the output interval has passed since the last time this
     //  method has printed a line, the accumulated data will be formatted and printed.  
     //  Every 10th line, a newline and a header will be printed (the number can be      
@@ -139,25 +132,21 @@ following interface:
     IL_EXPORT void
         il_log_output_line (il_log_t *self);
     
-    //  *** Draft method, for development use, may change without warning ***
     //  Add another file descriptor to the list of output streams.
     IL_EXPORT void
         il_log_add_file (il_log_t *self, FILE *fid);
     
-    //  *** Draft method, for development use, may change without warning ***
     //  Remove file descriptor from the list of output streams.
     IL_EXPORT void
         il_log_remove_file (il_log_t *self, FILE *fid);
     
-    //  *** Draft method, for development use, may change without warning ***
     //  Usage example and self test.
     IL_EXPORT void
         il_log_test (bool verbose);
     
-    #endif // IL_BUILD_DRAFT_API
 ```
 
-<A name="toc2-146" title="Example"></A>
+<A name="toc2-135" title="Example"></A>
 Example
 -------
 
@@ -269,7 +258,7 @@ If `verbose` is `true`, it produces the following output on `stderr`:
           27.5        27        28        55 1-3.4e-02
 ```
 
-<A name="toc2-258" title="Python bindings"></A>
+<A name="toc2-247" title="Python bindings"></A>
 Python bindings
 ---------------
 
@@ -328,7 +317,7 @@ similar to the example above:
     
 ```
 
-<A name="toc2-317" title="History"></A>
+<A name="toc2-306" title="History"></A>
 History
 -------
 

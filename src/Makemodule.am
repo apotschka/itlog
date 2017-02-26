@@ -14,23 +14,14 @@ pkgconfig_DATA = src/libitlog.pc
 
 include_HEADERS = \
     include/itlog.h \
+    include/il_log.h \
     include/il_library.h
 
-if ENABLE_DRAFTS
-include_HEADERS += \
-    include/il_log.h
-
-endif
 src_libitlog_la_SOURCES = \
     src/il_column.c \
     src/il_fid_list.c \
+    src/il_log.c \
     src/platform.h
-
-if ENABLE_DRAFTS
-src_libitlog_la_SOURCES += \
-    src/il_log.c
-
-endif
 
 if ENABLE_DRAFTS
 src_libitlog_la_SOURCES += \

@@ -57,23 +57,14 @@
 #   endif
 #endif
 
-//  Project has no stable classes, so we build the draft API
-#undef  IL_BUILD_DRAFT_API
-#define IL_BUILD_DRAFT_API
-
 //  Opaque class structures to allow forward references
 //  These classes are stable or legacy and built in all releases
-//  Draft classes are by default not built in stable releases
-#ifdef IL_BUILD_DRAFT_API
 typedef struct _il_log_t il_log_t;
 #define IL_LOG_T_DEFINED
-#endif // IL_BUILD_DRAFT_API
 
 
 //  Public classes, each with its own header file
-#ifdef IL_BUILD_DRAFT_API
 #include "il_log.h"
-#endif // IL_BUILD_DRAFT_API
 
 #ifdef IL_BUILD_DRAFT_API
 //  Self test for private classes

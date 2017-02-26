@@ -18,7 +18,7 @@
     <target name = "vs2015" />
     <target name = "python" />
 
-    <class name = "il_column" private = "1">Column data container.</class>
+    <class name = "il_column" private = "1" state = "stable">Column data container.</class>
     <class name = "il_fid_list" private = "1" />
 
     <class name = "il_log" />

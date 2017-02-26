@@ -22,7 +22,32 @@ set(pkg_config_libs_private "")
 ########################################################################
 # options
 ########################################################################
-OPTION (ENABLE_DRAFTS "Build and install draft classes and methods" ON)
+if (NOT CMAKE_BUILD_TYPE)
+    if (EXISTS "${SOURCE_DIR}/.git")
+        set (CMAKE_BUILD_TYPE Debug)
+    else ()
+# http://xit0.org/2013/04/cmake-use-git-branch-and-commit-details-in-project/
+# http://stackoverflow.com/questions/6797395/cmake-execute-process-always-fails-with-no-such-file-or-directory-when-i-cal
+        execute_process(
+            COMMAND git rev-parse --show-toplevel
+            WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+            RESULT_VARIABLE git_result
+            OUTPUT_VARIABLE git_root
+            OUTPUT_STRIP_TRAILING_WHITESPACE
+        )
+        message(STATUS "git workspace root [${git_result}]: ${git_root}")
+        if ( "${git_result}" == "0" )
+            set (CMAKE_BUILD_TYPE Debug)
+        else ()
+            set (CMAKE_BUILD_TYPE Release)
+        endif ()
+    endif ()
+endif ()
+if (${CMAKE_BUILD_TYPE} STREQUAL "Debug")
+    OPTION (ENABLE_DRAFTS "Build and install draft classes and methods" ON)
+else ()
+    OPTION (ENABLE_DRAFTS "Build and install draft classes and methods" OFF)
+endif ()
 IF (ENABLE_DRAFTS)
     ADD_DEFINITIONS (-DIL_BUILD_DRAFT_API)
 ENDIF (ENABLE_DRAFTS)
@@ -109,15 +134,10 @@ ENDIF (CZMQ_FOUND)
 set (il_headers
     include/il_library.h
     include/itlog.h
+    include/il_log.h
     src/il_column.h
     src/il_fid_list.h
 )
-
-IF (ENABLE_DRAFTS)
-    list(APPEND il_headers
-        include/il_log.h
-    )
-ENDIF (ENABLE_DRAFTS)
 
 source_group ("Header Files" FILES ${il_headers})
 install(FILES ${il_headers} DESTINATION include)
@@ -129,14 +149,8 @@ include_directories("${SOURCE_DIR}/src" "${SOURCE_DIR}/include")
 set (itlog_sources
     src/il_column.c
     src/il_fid_list.c
+    src/il_log.c
 )
-
-IF (ENABLE_DRAFTS)
-    list (APPEND itlog_sources
-        src/il_log.c
-    )
-ENDIF (ENABLE_DRAFTS)
-
 IF (ENABLE_DRAFTS)
     list (APPEND itlog_sources
         src/il_private_selftest.c
@@ -216,13 +230,8 @@ if(UNIX)
 endif()
 
 set(TEST_CLASSES
-)
-
-IF (ENABLE_DRAFTS)
-    list (APPEND TEST_CLASSES
     il_log
-    )
-ENDIF (ENABLE_DRAFTS)
+)
 
 IF (ENABLE_DRAFTS)
     list (APPEND TEST_CLASSES

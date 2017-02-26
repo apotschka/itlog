@@ -1,4 +1,4 @@
-<class name = "il_log">
+<class name = "il_log" state = "stable">
     Iteration logger class.
 
     <constant name = "use last" value = "1">Log entry supplied last.</constant>

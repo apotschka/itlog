@@ -1,4 +1,4 @@
-<class name = "il_fid_list" private = "1">
+<class name = "il_fid_list" private = "1" state = "stable">
     List of FILE descriptors for il_log output.
 
     <constructor>
